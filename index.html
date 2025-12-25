@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fahid Ali | Digital Growth & Security Expert</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#050505', // Darker black for OLED feel
+                            card: '#0F1115',
+                            border: '#1E2329',
+                        },
+                        primary: {
+                            teal: '#00F0FF', // Cyberpunk Cyan
+                            purple: '#BD00FF', // Cyberpunk Purple
+                            green: '#00FF94', // Cyberpunk Green
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'marquee': 'marquee 25s linear infinite',
+                        'scroll': 'scroll 40s linear infinite',
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'marquee': {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        'scroll': {
+                            '0%': { transform: 'translateX(0)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: 1, boxShadow: '0 0 30px rgba(0, 240, 255, 0.6)' },
+                            '50%': { opacity: .7, boxShadow: '0 0 15px rgba(0, 240, 255, 0.3)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #E5E7EB;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+        
+        /* Matrix Mode - Now handled via CSS Variables in React logic. 
+           Removed 'filter' property because it breaks position:fixed elements. 
+        */
+        body.matrix-mode {
+            background-color: #000000;
+        }
+
+        /* Grid Background pattern */
+        .bg-grid {
+            background-size: 50px 50px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -2;
+            pointer-events: none;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E2329;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00F0FF;
+        }
+        
+        .glass-panel {
+            background: rgba(15, 17, 21, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .text-glow {
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.11.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0"
+  }
+}
+</script>
+</head>
+<body>
+    <!-- Dynamic Background System -->
+    <div id="dynamic-bg" class="fixed inset-0 -z-50 overflow-hidden pointer-events-none">
+        <!-- Base Background Color -->
+        <div id="bg-base" class="absolute inset-0 transition-colors duration-[5000ms] bg-[#050505]"></div>
+        
+        <!-- Ambient Gradient -->
+        <div id="bg-ambient" class="absolute inset-0 opacity-40 transition-all duration-[5000ms]"></div>
+
+        <!-- Particles (Stars/Dust) -->
+        <canvas id="particle-canvas" class="absolute top-0 left-0 w-full h-full opacity-60"></canvas>
+        
+        <!-- Grid Overlay -->
+        <div class="absolute inset-0 bg-grid opacity-30"></div>
+    </div>
+
+    <div id="root"></div>
+
+    <script>
+        (function() {
+            // Background Elements
+            const bgBase = document.getElementById('bg-base');
+            const bgAmbient = document.getElementById('bg-ambient');
+
+            function updateTheme() {
+                const hour = new Date().getHours();
+                // Day is considered 6 AM to 6 PM (18:00)
+                const isDay = hour >= 6 && hour < 18;
+
+                // Base Color
+                const dayBase = 'bg-[#050505]'; // Kept dark to maintain site aesthetic, handled by React for specifics
+                const nightBase = 'bg-[#020204]';
+                if(bgBase) bgBase.className = `absolute inset-0 transition-colors duration-[5000ms] ${isDay ? dayBase : nightBase}`;
+
+                // Ambient Gradient
+                const dayAmbient = 'bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-orange-500/10 via-transparent to-transparent';
+                const nightAmbient = 'bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-purple-900/20 via-blue-900/10 to-transparent';
+                if(bgAmbient) bgAmbient.className = `absolute inset-0 opacity-40 transition-all duration-[5000ms] ${isDay ? dayAmbient : nightAmbient}`;
+            }
+
+            // Initial Update & Interval
+            updateTheme();
+            setInterval(updateTheme, 60000);
+
+            // Particle System
+            const canvas = document.getElementById('particle-canvas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let width = window.innerWidth;
+                let height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+
+                const particles = [];
+                const particleCount = width < 768 ? 40 : 80;
+
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        size: Math.random() * 2 + 1,
+                    });
+                }
+
+                function animateParticles() {
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.fillStyle = 'rgba(0, 240, 255, 0.3)';
+                    ctx.strokeStyle = 'rgba(0, 240, 255, 0.08)';
+
+                    particles.forEach((p, index) => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+
+                        if (p.x < 0 || p.x > width) p.vx *= -1;
+                        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fill();
+
+                        for (let j = index + 1; j < particles.length; j++) {
+                            const p2 = particles[j];
+                            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                            if (dist < 150) {
+                                ctx.beginPath();
+                                ctx.moveTo(p.x, p.y);
+                                ctx.lineTo(p2.x, p2.y);
+                                ctx.lineWidth = 1 - dist / 150;
+                                ctx.stroke();
+                            }
+                        }
+                    });
+                    requestAnimationFrame(animateParticles);
+                }
+                animateParticles();
+
+                window.addEventListener('resize', () => {
+                    width = window.innerWidth;
+                    height = window.innerHeight;
+                    canvas.width = width;
+                    canvas.height = height;
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

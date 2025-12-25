@@ -1,0 +1,8 @@
+{
+  "name": "Fahid Portfolio",
+  "description": "A comprehensive, high-performance React portfolio merging GHL Automation expertise and WordPress Security services. Features a unified glassmorphism design, SPA routing, and optimized content structure.",
+  "requestFramePermissions": [
+    "geolocation",
+    "microphone"
+  ]
+}
