@@ -87,6 +87,8 @@ export enum PageRoutes {
   TOOLS_SOCIAL = '/tools/social',
   TOOLS_CONTENT = '/tools/content',
   TOOLS_NEWS = '/tools/news',
+  TOOLS_BROADCAST = '/tools/broadcast', // New Neural Broadcast Tool
+
   ABOUT = '/about',
   CONTACT = '/contact',
   BLOG = '/blog',
@@ -94,4 +96,12 @@ export enum PageRoutes {
   DMCA = '/dmca',
   PRIVACY = '/privacy',
   TERMS = '/terms',
+}
+
+export enum VoiceName {
+  PUCK = 'Puck',
+  CHARON = 'Charon',
+  KORE = 'Kore',
+  FENRIR = 'Fenrir',
+  ZEPHYR = 'Zephyr'
 }

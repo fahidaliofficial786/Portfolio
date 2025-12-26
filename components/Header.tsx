@@ -147,6 +147,11 @@ export const Header: React.FC = () => {
                                 <div><span className="block text-sm font-bold text-white">Global News</span><span className="text-[10px] text-gray-500">Live RSS Feed</span></div>
                             </Link>
 
+                            <Link to={PageRoutes.TOOLS_BROADCAST} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                <div className="w-10 h-10 rounded bg-red-600/10 flex items-center justify-center text-red-600 group-hover/item:bg-red-600 group-hover/item:text-white transition-colors"><i className="fa-solid fa-microphone"></i></div>
+                                <div><span className="block text-sm font-bold text-white">Neural Broadcast</span><span className="text-[10px] text-gray-500">Gemini AI TTS</span></div>
+                            </Link>
+
                         </div>
                     </div>
                 </div>
@@ -229,6 +234,7 @@ export const Header: React.FC = () => {
                         <Link to={PageRoutes.TOOLS_SOCIAL} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-pink-500">SOCIAL LAB</Link>
                         <Link to={PageRoutes.TOOLS_CONTENT} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-orange-500">CONTENT AI</Link>
                         <Link to={PageRoutes.TOOLS_NEWS} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-teal-500">GLOBAL NEWS</Link>
+                        <Link to={PageRoutes.TOOLS_BROADCAST} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-red-600">NEURAL BROADCAST</Link>
                       </div>
                   </div>
               </div>

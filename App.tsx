@@ -17,6 +17,7 @@ import { ToolsBusiness } from './pages/ToolsBusiness';
 import { ToolsSocial } from './pages/ToolsSocial';
 import { ToolsContent } from './pages/ToolsContent';
 import { ToolsNews } from './pages/ToolsNews';
+import { ToolsBroadcast } from './pages/ToolsBroadcast';
 import { Legal } from './pages/Legal';
 import { PageRoutes } from './types';
 import { SystemHUD } from './components/SystemHUD';
@@ -100,6 +101,7 @@ const App: React.FC = () => {
             <Route path={PageRoutes.TOOLS_SOCIAL} element={<ToolsSocial />} />
             <Route path={PageRoutes.TOOLS_CONTENT} element={<ToolsContent />} />
             <Route path={PageRoutes.TOOLS_NEWS} element={<ToolsNews />} />
+            <Route path={PageRoutes.TOOLS_BROADCAST} element={<ToolsBroadcast />} />
 
             <Route path={PageRoutes.ABOUT} element={<About />} />
             <Route path={PageRoutes.CONTACT} element={<Contact />} />
