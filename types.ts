@@ -1,3 +1,4 @@
+
 export interface BlogPost {
   id: number;
   title: string;
@@ -71,6 +72,14 @@ export enum PageRoutes {
   HOME = '/',
   SECURITY = '/security-services',
   SERVICES = '/services',
+  
+  // New Service Sub-pages
+  SERVICE_WEB = '/services/websites',
+  SERVICE_ADS = '/services/advertising',
+  SERVICE_CONTENT = '/services/content',
+  SERVICE_SEO = '/services/local-seo',
+  SERVICE_CRM = '/services/crm-automation',
+
   TOOLS = '/tools', // Cyber Warfare (Default)
   TOOLS_SEO = '/tools/seo',
   TOOLS_TRENDS = '/tools/trends',

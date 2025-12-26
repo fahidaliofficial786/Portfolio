@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { PageRoutes } from '../types';
@@ -7,6 +8,8 @@ import { VoiceCommander } from './VoiceCommander';
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileToolsOpen, setIsMobileToolsOpen] = useState(false); 
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false); // New state for mobile services dropdown
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -63,9 +66,46 @@ export const Header: React.FC = () => {
                   Home
                 </Link>
 
-                <Link to={PageRoutes.SERVICES} className={`relative px-4 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 whitespace-nowrap ${location.pathname === PageRoutes.SERVICES ? 'text-black bg-primary-teal' : 'text-gray-300 hover:text-white hover:bg-white/10'}`}>
-                  Services
-                </Link>
+                {/* SERVICES DROPDOWN */}
+                <div className="relative group">
+                    <button className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 whitespace-nowrap ${location.pathname.includes('/services') ? 'text-black bg-primary-teal' : 'text-gray-300 hover:text-white hover:bg-white/10'}`}>
+                        Services <i className="fa-solid fa-chevron-down text-[10px] group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    
+                    {/* Services Mega Menu */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[280px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2">
+                        <div className="bg-[#0F1115] border border-white/10 rounded-xl p-2 shadow-2xl backdrop-blur-xl flex flex-col gap-1">
+                            
+                            <Link to={PageRoutes.SERVICE_WEB} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                <div className="w-8 h-8 rounded bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover/item:text-white group-hover/item:bg-blue-500 transition-colors"><i className="fa-solid fa-laptop-code"></i></div>
+                                <span className="text-sm font-bold text-white">Websites & Digital</span>
+                            </Link>
+                            
+                            <Link to={PageRoutes.SERVICE_ADS} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                <div className="w-8 h-8 rounded bg-orange-500/10 flex items-center justify-center text-orange-500 group-hover/item:text-white group-hover/item:bg-orange-500 transition-colors"><i className="fa-solid fa-bullhorn"></i></div>
+                                <span className="text-sm font-bold text-white">Paid Advertising</span>
+                            </Link>
+
+                            <Link to={PageRoutes.SERVICE_CONTENT} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                <div className="w-8 h-8 rounded bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover/item:text-white group-hover/item:bg-purple-500 transition-colors"><i className="fa-solid fa-pen-nib"></i></div>
+                                <span className="text-sm font-bold text-white">Content & Creative</span>
+                            </Link>
+
+                            <Link to={PageRoutes.SERVICE_SEO} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                <div className="w-8 h-8 rounded bg-green-500/10 flex items-center justify-center text-green-500 group-hover/item:text-white group-hover/item:bg-green-500 transition-colors"><i className="fa-solid fa-map-location-dot"></i></div>
+                                <span className="text-sm font-bold text-white">Local SEO</span>
+                            </Link>
+
+                            <Link to={PageRoutes.SERVICE_CRM} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group/item">
+                                <div className="w-8 h-8 rounded bg-red-500/10 flex items-center justify-center text-red-500 group-hover/item:text-white group-hover/item:bg-red-500 transition-colors"><i className="fa-solid fa-robot"></i></div>
+                                <span className="text-sm font-bold text-white">CRM & Automation</span>
+                            </Link>
+                            
+                            <div className="h-px bg-white/10 my-1"></div>
+                            <Link to={PageRoutes.SERVICES} className="text-center text-xs text-gray-500 hover:text-white py-2">View All Services</Link>
+                        </div>
+                    </div>
+                </div>
 
                 {/* Expanded Mega Menu for Tools */}
                 <div className="relative group">
@@ -134,7 +174,7 @@ export const Header: React.FC = () => {
                 </span>
               </a>
             </div>
-            <button className="lg:hidden relative z-50 w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white hover:bg-primary-teal hover:text-black transition-all" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            <button className="lg:hidden relative z-[60] w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-white hover:bg-primary-teal hover:text-black transition-all" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
               <i className={`fa-solid ${isMobileMenuOpen ? 'fa-xmark text-xl' : 'fa-bars-staggered text-lg'}`}></i>
             </button>
           </div>
@@ -142,21 +182,65 @@ export const Header: React.FC = () => {
       </header>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 z-40 bg-[#050505] transform transition-transform duration-500 cubic-bezier(0.7, 0, 0.3, 1) ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
-        <div className="relative z-10 container mx-auto px-6 h-full flex flex-col justify-center overflow-y-auto py-20">
-          <nav className="flex flex-col gap-4">
+      <div className={`fixed inset-0 z-[60] bg-[#050505] transform transition-transform duration-500 cubic-bezier(0.7, 0, 0.3, 1) ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'}`}>
+        <div className="relative z-10 container mx-auto px-6 h-full flex flex-col pt-32 pb-12 overflow-y-auto">
+          <nav className="flex flex-col gap-6">
+              
+              {/* 1. Home */}
               <Link to={PageRoutes.HOME} onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-white hover:to-white hover:translate-x-4 transition-all">HOME</Link>
               
-              <div className="pl-4 border-l-2 border-primary-teal/20 space-y-3 my-2">
-                 <Link to={PageRoutes.TOOLS} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-red-500">CYBER LAB</Link>
-                 <Link to={PageRoutes.TOOLS_BUSINESS} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-blue-500">BUSINESS LAB</Link>
-                 <Link to={PageRoutes.TOOLS_SOCIAL} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-pink-500">SOCIAL LAB</Link>
-                 <Link to={PageRoutes.TOOLS_CONTENT} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-orange-500">CONTENT AI</Link>
-                 <Link to={PageRoutes.TOOLS_NEWS} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-teal-500">GLOBAL NEWS</Link>
+              {/* 2. Services Dropdown for Mobile */}
+              <div>
+                  <button 
+                      onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)} 
+                      className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-white hover:to-white flex items-center gap-4 transition-all w-full text-left"
+                  >
+                      SERVICES
+                      <i className={`fa-solid fa-chevron-down text-xl text-gray-500 transition-transform ${isMobileServicesOpen ? 'rotate-180' : ''}`}></i>
+                  </button>
+                  
+                  <div className={`overflow-hidden transition-all duration-300 ${isMobileServicesOpen ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                      <div className="pl-4 border-l-2 border-primary-teal/20 space-y-4">
+                        <Link to={PageRoutes.SERVICE_WEB} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-blue-500">WEBSITES</Link>
+                        <Link to={PageRoutes.SERVICE_ADS} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-orange-500">PAID ADS</Link>
+                        <Link to={PageRoutes.SERVICE_CONTENT} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-purple-500">CONTENT</Link>
+                        <Link to={PageRoutes.SERVICE_SEO} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-green-500">LOCAL SEO</Link>
+                        <Link to={PageRoutes.SERVICE_CRM} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-red-500">CRM AUTOMATION</Link>
+                        <Link to={PageRoutes.SERVICES} onClick={() => setIsMobileMenuOpen(false)} className="block text-lg text-gray-600 hover:text-white mt-2">View All Services</Link>
+                      </div>
+                  </div>
               </div>
 
-              <Link to={PageRoutes.SERVICES} onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-white hover:to-white hover:translate-x-4 transition-all">SERVICES</Link>
-              <button onClick={handleContactClick} className="text-left text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-primary-teal hover:to-green-400 hover:translate-x-4 transition-all">ESTABLISH UPLINK</button>
+              {/* 3. Lab Tools (Toggleable Dropdown to match Desktop) */}
+              <div>
+                  <button 
+                      onClick={() => setIsMobileToolsOpen(!isMobileToolsOpen)} 
+                      className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-white hover:to-white flex items-center gap-4 transition-all w-full text-left"
+                  >
+                      LAB TOOLS
+                      <i className={`fa-solid fa-chevron-down text-xl text-gray-500 transition-transform ${isMobileToolsOpen ? 'rotate-180' : ''}`}></i>
+                  </button>
+                  
+                  {/* Collapsible Content */}
+                  <div className={`overflow-hidden transition-all duration-300 ${isMobileToolsOpen ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                      <div className="pl-4 border-l-2 border-primary-teal/20 space-y-4">
+                        <Link to={PageRoutes.TOOLS} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-red-500">CYBER LAB</Link>
+                        <Link to={PageRoutes.TOOLS_BUSINESS} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-blue-500">BUSINESS LAB</Link>
+                        <Link to={PageRoutes.TOOLS_SOCIAL} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-pink-500">SOCIAL LAB</Link>
+                        <Link to={PageRoutes.TOOLS_CONTENT} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-orange-500">CONTENT AI</Link>
+                        <Link to={PageRoutes.TOOLS_NEWS} onClick={() => setIsMobileMenuOpen(false)} className="block text-xl font-bold text-gray-400 hover:text-teal-500">GLOBAL NEWS</Link>
+                      </div>
+                  </div>
+              </div>
+
+              {/* 4. Security */}
+              <Link to={PageRoutes.SECURITY} onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-white hover:to-white hover:translate-x-4 transition-all">SECURITY</Link>
+
+              {/* Divider & Contact at Bottom */}
+              <div className="mt-8 pt-8 border-t border-white/10">
+                   <button onClick={handleContactClick} className="text-left text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-primary-teal hover:to-green-400 hover:translate-x-4 transition-all">ESTABLISH UPLINK</button>
+              </div>
+
           </nav>
         </div>
       </div>

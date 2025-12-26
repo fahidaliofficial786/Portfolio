@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PageRoutes } from '../types';
@@ -102,11 +103,37 @@ export const Footer: React.FC = () => {
           
           <div>
             <h3 className="text-white font-bold mb-4">Services</h3>
-            <ul className="space-y-2 text-gray-400 text-sm">
-              <li><Link to={PageRoutes.SECURITY} className="hover:text-teal-400 transition-colors">Malware Removal</Link></li>
-              <li><Link to={PageRoutes.SERVICES} className="hover:text-teal-400 transition-colors">GHL Automation</Link></li>
-              <li><Link to={PageRoutes.SERVICES} className="hover:text-teal-400 transition-colors">WP Security Hardening</Link></li>
-              <li><Link to={PageRoutes.SERVICES} className="hover:text-teal-400 transition-colors">API Integrations</Link></li>
+            <ul className="space-y-3 text-gray-400 text-sm">
+              <li>
+                <Link to={PageRoutes.SERVICE_WEB} className="hover:text-teal-400 transition-colors duration-300 inline-block hover:translate-x-1">
+                  Websites & Digital Presence
+                </Link>
+              </li>
+              <li>
+                <Link to={PageRoutes.SERVICE_ADS} className="hover:text-teal-400 transition-colors duration-300 inline-block hover:translate-x-1">
+                  Paid Advertising
+                </Link>
+              </li>
+              <li>
+                <Link to={PageRoutes.SERVICE_CONTENT} className="hover:text-teal-400 transition-colors duration-300 inline-block hover:translate-x-1">
+                  Content & Creative
+                </Link>
+              </li>
+              <li>
+                <Link to={PageRoutes.SERVICE_SEO} className="hover:text-teal-400 transition-colors duration-300 inline-block hover:translate-x-1">
+                  Local SEO
+                </Link>
+              </li>
+              <li>
+                <Link to={PageRoutes.SERVICE_CRM} className="hover:text-teal-400 transition-colors duration-300 inline-block hover:translate-x-1">
+                  CRM & Automation
+                </Link>
+              </li>
+              <li>
+                <Link to={PageRoutes.SECURITY} className="hover:text-red-400 transition-colors duration-300 inline-block hover:translate-x-1">
+                  Emergency WP Security
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -51,11 +51,11 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="pt-32 md:pt-40">
+    <div className="pt-24 md:pt-28">
       
       {/* Hero Section */}
       <section 
-        className={`relative min-h-[85vh] md:min-h-[90vh] flex flex-col justify-start pt-12 md:pt-20 items-center text-center px-4 overflow-hidden pb-20 transition-colors duration-[2000ms] ease-in-out ${
+        className={`relative min-h-[60vh] flex flex-col justify-center items-center text-center px-4 overflow-hidden pb-12 transition-colors duration-[2000ms] ease-in-out ${
           isDay ? 'bg-gradient-to-b from-orange-500/10 via-blue-400/5 to-transparent' : 'bg-transparent'
         }`}
       >
@@ -79,7 +79,7 @@ export const Home: React.FC = () => {
              </div>
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto space-y-8">
+        <div className="relative z-10 max-w-5xl mx-auto space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-2 animate-float">
              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
              <span className="text-sm font-mono text-primary-teal">System Operational | Open for Projects</span>
@@ -92,24 +92,12 @@ export const Home: React.FC = () => {
           
           <TerminalHero />
           
-          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-8">
+          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-4">
             Merging High-Level Automation Logic with Military-Grade WordPress Security. 
             I build systems that sleep while you earn, and shields that stay awake while you sleep.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-6 pb-4">
-             <a href="#contact" className="group relative px-8 py-4 bg-white text-black font-bold text-lg rounded-lg overflow-hidden transition-transform hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)]">
-                <div className="absolute inset-0 bg-primary-teal translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                <span className="relative group-hover:text-black z-10">Initiate Protocol</span>
-             </a>
-             <a href={SOCIAL_LINKS.fiverr} target="_blank" rel="noreferrer" className="px-8 py-4 border border-white/20 hover:border-primary-teal/50 rounded-lg font-bold text-lg text-gray-300 hover:text-white transition-all backdrop-blur-sm">
-                Access Archives
-             </a>
-          </div>
-        </div>
-        
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce text-gray-500 z-20">
-           <i className="fa-solid fa-chevron-down text-2xl"></i>
+          {/* Buttons and Arrow Removed as requested */}
         </div>
       </section>
 
