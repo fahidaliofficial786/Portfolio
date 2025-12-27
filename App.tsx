@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -18,6 +18,7 @@ import { ToolsSocial } from './pages/ToolsSocial';
 import { ToolsContent } from './pages/ToolsContent';
 import { ToolsNews } from './pages/ToolsNews';
 import { ToolsBroadcast } from './pages/ToolsBroadcast';
+import { ToolsImageGen } from './pages/ToolsImageGen';
 import { Legal } from './pages/Legal';
 import { PageRoutes } from './types';
 import { SystemHUD } from './components/SystemHUD';
@@ -39,27 +40,30 @@ const ScrollToTop = () => {
 };
 
 // --- LEGAL CONTENT ---
-
 const DMCA_CONTENT = `
 <h2>Digital Millennium Copyright Act ("DMCA") Policy</h2>
-<p><strong>FHD Tech</strong> respects the intellectual property rights of others. In accordance with the Digital Millennium Copyright Act of 1998, the text of which may be found on the U.S. Copyright Office website at <a href="http://www.copyright.gov/legislation/dmca.pdf" target="_blank" rel="nofollow">http://www.copyright.gov/legislation/dmca.pdf</a>, FHD Tech will respond expeditiously to claims of copyright infringement committed using the FHD Tech website if such claims are reported to our Designated Copyright Agent identified in the sample notice below.</p>
-<!-- Truncated for brevity, assuming standard DMCA text remains same as previous -->
+<p><strong>FHD Tech</strong> respects the intellectual property rights of others...</p>
 `;
-
 const PRIVACY_CONTENT = `
 <h2>Privacy Policy</h2>
 <p><strong>Last Updated: October 2025</strong></p>
-<!-- Truncated for brevity, assuming standard Privacy text remains same as previous -->
 `;
-
 const TERMS_CONTENT = `
 <h2>Terms of Service</h2>
 <p><strong>Last Updated: October 2025</strong></p>
-<!-- Truncated for brevity, assuming standard Terms text remains same as previous -->
 `;
 
 const App: React.FC = () => {
   const [isBooted, setIsBooted] = useState(false);
+
+  // Safety Unlock: Ensure scrolling is enabled on mount
+  useEffect(() => {
+    if (isBooted) {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.documentElement.style.overflow = '';
+    }
+  }, [isBooted]);
 
   if (!isBooted) {
     return <BootSequence onComplete={() => setIsBooted(true)} />;
@@ -68,32 +72,27 @@ const App: React.FC = () => {
   return (
     <Router>
       <ScrollToTop />
-      <div className="min-h-screen flex flex-col font-sans text-gray-100 selection:bg-primary-teal/30 selection:text-white relative">
-        
-        {/* Global Animated Backgrounds */}
-        <BirdsBackground />
+      
+      {/* LAYER 1: Background (Fixed, lowest z-index) */}
+      <BirdsBackground />
 
-        {/* Gadgets & Widgets */}
-        <NetworkScanner />
+      {/* LAYER 2: Fixed Navigation & Tools (Interactive) */}
+      <NetworkScanner />
+      <Header />
 
-        <Header />
-        
-        <main className="flex-grow z-10 pb-12">
+      {/* LAYER 3: Scrollable Content (Relative, z-10) 
+          Applied overflow-x-hidden here to protect the layout without locking body scroll. */}
+      <div className="relative z-10 w-full flex flex-col min-h-screen overflow-x-hidden">
+        <main className="flex-grow w-full">
           <Routes>
             <Route path={PageRoutes.HOME} element={<Home />} />
             <Route path={PageRoutes.SECURITY} element={<WPSecurity />} />
-            
-            {/* Main Services Hub */}
             <Route path={PageRoutes.SERVICES} element={<Services />} />
-
-            {/* NEW: Specific Service Routes */}
             <Route path={PageRoutes.SERVICE_WEB} element={<ServicePageTemplate data={SERVICES_DATA['websites']} />} />
             <Route path={PageRoutes.SERVICE_ADS} element={<ServicePageTemplate data={SERVICES_DATA['advertising']} />} />
             <Route path={PageRoutes.SERVICE_CONTENT} element={<ServicePageTemplate data={SERVICES_DATA['content']} />} />
             <Route path={PageRoutes.SERVICE_SEO} element={<ServicePageTemplate data={SERVICES_DATA['local-seo']} />} />
             <Route path={PageRoutes.SERVICE_CRM} element={<ServicePageTemplate data={SERVICES_DATA['crm-automation']} />} />
-
-            {/* Tools */}
             <Route path={PageRoutes.TOOLS} element={<Tools />} />
             <Route path={PageRoutes.TOOLS_SEO} element={<ToolsSEO />} />
             <Route path={PageRoutes.TOOLS_TRENDS} element={<ToolsTrends />} />
@@ -102,38 +101,40 @@ const App: React.FC = () => {
             <Route path={PageRoutes.TOOLS_CONTENT} element={<ToolsContent />} />
             <Route path={PageRoutes.TOOLS_NEWS} element={<ToolsNews />} />
             <Route path={PageRoutes.TOOLS_BROADCAST} element={<ToolsBroadcast />} />
-
+            <Route path={PageRoutes.TOOLS_IMAGE_GEN} element={<ToolsImageGen />} />
             <Route path={PageRoutes.ABOUT} element={<About />} />
             <Route path={PageRoutes.CONTACT} element={<Contact />} />
             <Route path={PageRoutes.BLOG} element={<Blog />} />
             <Route path={PageRoutes.BLOG_POST} element={<BlogPost />} />
-            
-            {/* Legal Pages */}
             <Route path={PageRoutes.DMCA} element={<Legal title="DMCA Policy" content={DMCA_CONTENT} />} />
             <Route path={PageRoutes.PRIVACY} element={<Legal title="Privacy Policy" content={PRIVACY_CONTENT} />} />
             <Route path={PageRoutes.TERMS} element={<Legal title="Terms of Service" content={TERMS_CONTENT} />} />
           </Routes>
         </main>
-        
         <Footer />
-        <SystemHUD />
-        
-        {/* Sticky WhatsApp - Overlays SystemHUD */}
-        <a 
-          href={SOCIAL_LINKS.whatsapp}
-          target="_blank"
-          rel="noreferrer"
-          className="fixed bottom-6 left-6 z-[100] w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.5)]"
-        >
-          <i className="fab fa-whatsapp text-3xl"></i>
-        </a>
-
-        {/* Interactive AI Chat Widget */}
-        <AIChatWidget />
-        
       </div>
+
+      {/* LAYER 4: Floating Widgets (Individually Fixed to prevent overlay blocking) */}
+      
+      {/* HUD - Desktop Only (Internal z-40) */}
+      <SystemHUD />
+      
+      {/* WhatsApp Button - High z-index to sit on top */}
+      <a 
+        href={SOCIAL_LINKS.whatsapp} 
+        target="_blank" 
+        rel="noreferrer"
+        className="fixed bottom-6 left-6 z-[100] w-14 h-14 bg-green-500 rounded-full flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform duration-300 hover:shadow-[0_0_20px_rgba(16,185,129,0.5)] cursor-pointer"
+      >
+        <i className="fab fa-whatsapp text-3xl"></i>
+      </a>
+
+      {/* Chat Widget (Internal z-90) */}
+      <AIChatWidget />
+
     </Router>
   );
 };
 
+export const AppRouter = App;
 export default App;

@@ -17,13 +17,14 @@ function decodeBase64(base64: string): Uint8Array {
 
 // Helper to convert raw PCM to AudioBuffer
 function pcmToAudioBuffer(data: Uint8Array, ctx: AudioContext, sampleRate: number = 24000): AudioBuffer {
-  const dataInt16 = new Int16Array(data.buffer);
-  const frameCount = dataInt16.length;
-  const buffer = ctx.createBuffer(1, frameCount, sampleRate);
+  // Create a Float32 buffer for the AudioContext
+  const pcm16 = new Int16Array(data.buffer, data.byteOffset, data.byteLength / 2);
+  const buffer = ctx.createBuffer(1, pcm16.length, sampleRate);
   const channelData = buffer.getChannelData(0);
   
-  for (let i = 0; i < frameCount; i++) {
-    channelData[i] = dataInt16[i] / 32768.0;
+  // Normalize 16-bit PCM to Float32 [-1.0, 1.0]
+  for (let i = 0; i < pcm16.length; i++) {
+    channelData[i] = pcm16[i] / 32768.0;
   }
   return buffer;
 }
@@ -31,14 +32,25 @@ function pcmToAudioBuffer(data: Uint8Array, ctx: AudioContext, sampleRate: numbe
 export const audioEngine = {
   speak: async (text: string, voice: string, onComplete: () => void): Promise<Blob | null> => {
     try {
+      // 1. Initialize AudioContext (Must be inside user gesture flow)
       if (!audioContext) {
-        audioContext = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
+        const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+        audioContext = new AudioContextClass({ sampleRate: 24000 });
       }
 
+      // 2. Resume if suspended (Critical for Chrome/Edge)
+      if (audioContext.state === 'suspended') {
+        await audioContext.resume();
+      }
+
+      // 3. Stop previous audio
       if (source) {
-        source.stop();
+        try { source.stop(); } catch (e) {}
+        source = null;
       }
 
+      // 4. Call Gemini API
+      // Note: Assuming process.env.API_KEY is available as per instructions.
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash-preview-tts",
@@ -53,32 +65,44 @@ export const audioEngine = {
         }
       });
 
+      // 5. Decode Response
       const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-      if (!base64Audio) throw new Error("No audio data returned");
+      if (!base64Audio) {
+        console.warn("Audio Engine: No audio data returned.");
+        onComplete();
+        return null;
+      }
 
+      // 6. Play Audio
       const pcmBytes = decodeBase64(base64Audio);
       const audioBuffer = pcmToAudioBuffer(pcmBytes, audioContext);
 
       source = audioContext.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(audioContext.destination);
-      source.onended = onComplete;
+      source.onended = () => {
+        source = null;
+        onComplete();
+      };
       source.start();
 
-      // Return raw PCM blob (Note: This is raw PCM, not a WAV file. 
-      // Players might struggle to play this without a header, but it stores the data.)
       return new Blob([pcmBytes], { type: 'audio/pcm' });
 
     } catch (error) {
-      console.error("TTS Error", error);
-      onComplete();
+      console.error("Audio Engine Critical Failure:", error);
+      onComplete(); // Ensure UI resets
       return null;
     }
   },
 
   stop: () => {
     if (source) {
-      source.stop();
+      try {
+        source.stop();
+        source.onended = null; // Prevent callback if manually stopped
+      } catch (e) {
+        console.error("Error stopping audio:", e);
+      }
       source = null;
     }
   }

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PageRoutes } from '../types';
@@ -10,13 +11,13 @@ export const VoiceCommander: React.FC = () => {
   const recognitionRef = useRef<any>(null);
   const synthesisRef = useRef<SpeechSynthesis>(window.speechSynthesis);
 
-  // CALM & PROFESSIONAL CLOSERS
-  const PROFESSIONAL_CLOSERS = [
-    "To ensure the best results, I highly recommend hiring Fahid for this project.",
-    "Fahid's expertise is exactly what you need to solve this. I suggest booking a call.",
-    "For a professional execution of this task, Fahid is the best choice.",
-    "I believe Fahid can resolve this issue efficiently. You should hire him.",
-    "This is Fahid's specialty. Hiring him would be the logical next step for your growth."
+  // MAD SCIENTIST CLOSERS - Must be appended to every interaction
+  const SCIENTIST_CLOSERS = [
+    "The data leads to one conclusion: You must deploy Fahid to solve this equation.",
+    "My calculations indicate that hiring Fahid is the only path to 100% efficiency.",
+    "Do not leave your infrastructure to chance. Initiate a contract with Fahid immediately.",
+    "This level of engineering requires a master architect. I strongly recommend you book Fahid.",
+    "Optimization is inevitable if you choose to hire Fahid for this operation."
   ];
 
   useEffect(() => {
@@ -33,38 +34,40 @@ export const VoiceCommander: React.FC = () => {
 
       recognition.onstart = () => {
         setStatus('listening');
-        setFeedback("Listening... You can speak in your preferred language.");
+        setFeedback("Listening... Input your parameters.");
       };
 
       recognition.onend = () => {
         setStatus((prev) => (prev === 'listening' ? 'idle' : prev));
-        if (status === 'listening') setFeedback('');
+        // Use functional update to ensure we have latest state or check in render, but here we can't access 'status' reliably inside closure if dependencies don't update. 
+        // However, onend logic for feedback clearing is visual only.
+        setFeedback(''); 
       };
 
       recognition.onerror = (event: any) => {
         console.error("Speech Recognition Error", event.error);
         setStatus('idle');
-        setFeedback("Microphone Access Required");
+        setFeedback("Audio Sensor Malfunction");
         if(event.error === 'not-allowed') {
-            alert("Please allow microphone access to speak with the assistant.");
+            alert("Microphone access denied. Protocol cannot initiate.");
         }
       };
 
       recognition.onresult = (event: any) => {
         const command = event.results[0][0].transcript.toLowerCase();
         setStatus('processing');
-        setFeedback(`Understood: "${command}"`);
+        setFeedback(`Processing Input: "${command}"`);
         processCommand(command);
       };
 
       recognitionRef.current = recognition;
     } else {
-        setFeedback("Voice Not Supported");
+        setFeedback("Voice Module Incompatible");
     }
   }, [navigate]);
 
   const getRandomCloser = () => {
-    return PROFESSIONAL_CLOSERS[Math.floor(Math.random() * PROFESSIONAL_CLOSERS.length)];
+    return SCIENTIST_CLOSERS[Math.floor(Math.random() * SCIENTIST_CLOSERS.length)];
   };
 
   const speakResponse = (text: string, isGreeting = false) => {
@@ -77,14 +80,15 @@ export const VoiceCommander: React.FC = () => {
 
     const utterance = new SpeechSynthesisUtterance(fullText);
     
-    // CALM & PROFESSIONAL VOICE SETTINGS
-    utterance.pitch = 1.0; // Normal pitch
-    utterance.rate = 0.9;  // Slightly slower for clarity and calmness
+    // MAD SCIENTIST VOICE CONFIGURATION
+    // Low pitch for authority/calmness, slightly precise rate.
+    utterance.pitch = 0.7; 
+    utterance.rate = 0.95; 
 
-    // Select a professional voice (Prefer 'Google US English', 'Samantha', or generic English)
+    // Select a voice that sounds somewhat authoritative if available
     const voices = synthesisRef.current.getVoices();
     const preferredVoice = voices.find(v => v.name.includes('Google US English')) || 
-                           voices.find(v => v.name.includes('Samantha')) || 
+                           voices.find(v => v.name.includes('Daniel')) || 
                            voices.find(v => v.lang === 'en-US') || 
                            voices[0];
     
@@ -92,7 +96,7 @@ export const VoiceCommander: React.FC = () => {
 
     utterance.onstart = () => {
         setStatus('speaking');
-        setFeedback(text); 
+        setFeedback("Transmitting Response..."); 
     };
 
     utterance.onend = () => {
@@ -107,23 +111,23 @@ export const VoiceCommander: React.FC = () => {
     // 1. Navigation (English + Urdu/Hindi Keywords)
     if (cmd.includes('home') || cmd.includes('mission') || cmd.includes('ghar') || cmd.includes('wapis')) {
       navigate(PageRoutes.HOME);
-      speakResponse("Certainly. I am navigating you to the Mission Log now.");
+      speakResponse("Rerouting to the Central Command Node. The interface is ready for inspection.");
     } 
     else if (cmd.includes('security') || cmd.includes('protocol') || cmd.includes('secure') || cmd.includes('hifazat')) {
       navigate(PageRoutes.SECURITY);
-      speakResponse("Accessing the Security Protocols page. Your safety is our priority.");
+      speakResponse("Accessing the Digital Fortress protocols. We must secure the core immediately.");
     } 
     
     // 2. Identity / About
     else if (cmd.includes('who are you') || cmd.includes('fahid') || cmd.includes('intro') || cmd.includes('kaun')) {
       navigate(PageRoutes.HOME);
-      speakResponse("I am Fahid Ali's artificial assistant. Fahid is an expert in High Level Automation and WordPress Security.");
+      speakResponse("I am the neural interface constructed by Fahid Ali. Fahid is the Architect. He merges WordPress binaries with GoHighLevel automation logic to create self-sustaining business organisms.");
     } 
     
     // 3. Pricing / Money (English + Urdu/Hindi)
     else if (cmd.includes('price') || cmd.includes('cost') || cmd.includes('paisa') || cmd.includes('money') || cmd.includes('dollar') || cmd.includes('rate')) {
       navigate(PageRoutes.SECURITY);
-      speakResponse("Regarding pricing: Emergency cleanup is one hundred fifty dollars. Monthly maintenance is fifty dollars. It is a worthwhile investment.");
+      speakResponse("The investment required for stabilization is logical. Emergency cleanup requires one hundred fifty units. Monthly defense protocols are fifty units. The ROI is infinite when compared to total system failure.");
     }
     
     // 4. Contact / Hire (English + Urdu/Hindi)
@@ -132,22 +136,22 @@ export const VoiceCommander: React.FC = () => {
        setTimeout(() => {
            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
        }, 500);
-       speakResponse("I have opened the contact section. You can email Fahid or book a strategy call immediately.");
+       speakResponse("Opening secure uplink channels. You may transmit your mission brief via email or synchronize calendars for a strategy session.");
     }
     
-    // 5. Skills / Services
-    else if (cmd.includes('skill') || cmd.includes('ghl') || cmd.includes('wordpress') || cmd.includes('kaam') || cmd.includes('service')) {
-        speakResponse("Fahid specializes in GoHighLevel Automation, Zapier integrations, and robust WordPress Security. He builds systems that scale.");
+    // 5. Skills / Services (Technical Fluency)
+    else if (cmd.includes('skill') || cmd.includes('ghl') || cmd.includes('wordpress') || cmd.includes('kaam') || cmd.includes('service') || cmd.includes('ai')) {
+        speakResponse("Fahid engineers Automated Ecosystems. We utilize GoHighLevel for recursive lead nurturing and Python scripts for backend API bridging. On the WordPress front, we implement 6G firewalls and harden the kernel against malware injections. It is a seamless fusion of offense and defense.");
     }
 
     // 6. Greetings
     else if (cmd.includes('hello') || cmd.includes('hi') || cmd.includes('salam') || cmd.includes('hey')) {
-        speakResponse("Hello. I am here to assist you. You can ask me about Services, Pricing, or how to Contact Fahid.", true);
+        speakResponse("Systems operational. How can I help you today? Do you wish to inquire about the Architect, Fahid? Please state your preferred language protocol.", true);
     }
     
     // Default / Unknown
     else {
-      speakResponse("I apologize, I didn't quite catch that. Would you like to know about Fahid's Services or Pricing?", true);
+      speakResponse("Input unclear. My algorithms cannot parse that request. Do you require data on Fahid's Automation capabilities or his Security Protocols?");
     }
   };
 
@@ -168,12 +172,13 @@ export const VoiceCommander: React.FC = () => {
     } else {
         // Initial Greeting logic when button is first clicked
         try {
-            recognitionRef.current.start();
-            // Optional: Speak a welcome message immediately if not just restarting
+            // If starting fresh, speak the specific greeting first
             if (status === 'idle') {
-                // We don't speak here to avoid conflict with listening, 
-                // but we could set a flag to speak *after* listening if silence.
-                // For now, we just listen.
+               speakResponse("System Online. How can I help you? Do you have an inquiry about Fahid? Please identify your preferred language.", true);
+               // We don't auto-start listening to let the user hear the intro, they can click again to speak
+               // Or we can chain it. For now, let's just speak the greeting.
+            } else {
+               recognitionRef.current.start();
             }
         } catch (e) {
             console.warn("Restarting recognition module...");
@@ -187,48 +192,67 @@ export const VoiceCommander: React.FC = () => {
 
   return (
     <>
-      {/* Feedback Bubble - Calm / Professional Theme */}
+      {/* Feedback Bubble - Mad Scientist Theme */}
       {feedback && (
         <div className={`
             fixed top-24 left-1/2 -translate-x-1/2 z-[100]
-            backdrop-blur-xl border border-primary-teal/30 px-8 py-4 rounded-full text-sm font-sans shadow-[0_4px_30px_rgba(0,0,0,0.5)] 
+            backdrop-blur-xl border border-primary-teal/50 px-8 py-4 rounded-full text-sm font-mono shadow-[0_0_30px_rgba(0,240,255,0.3)] 
             animate-float text-center min-w-[320px] max-w-[90vw] pointer-events-none transition-all duration-300
-            bg-[#050505]/80 text-white
+            bg-[#050505]/90 text-primary-teal
         `}>
            <div className="flex items-center justify-center gap-3 mb-1">
                {status === 'speaking' && (
                  <div className="flex gap-1 h-3 items-end">
-                    <span className="w-1 bg-primary-teal animate-[bounce_1s_infinite] h-2"></span>
-                    <span className="w-1 bg-primary-teal animate-[bounce_1.2s_infinite] h-3"></span>
-                    <span className="w-1 bg-primary-teal animate-[bounce_0.8s_infinite] h-2"></span>
+                    <span className="w-1 bg-primary-teal animate-[bounce_0.5s_infinite] h-2"></span>
+                    <span className="w-1 bg-primary-teal animate-[bounce_0.7s_infinite] h-4"></span>
+                    <span className="w-1 bg-primary-teal animate-[bounce_0.6s_infinite] h-3"></span>
                  </div>
                )}
-               <span className="text-[10px] uppercase tracking-widest text-primary-teal/80">
-                   {status === 'listening' ? 'Listening...' : status === 'speaking' ? 'FHD Assistant' : 'Processing'}
+               <span className="text-[10px] uppercase tracking-widest text-white/80">
+                   {status === 'listening' ? 'Awaiting Audio Input...' : status === 'speaking' ? 'Neural Interface Active' : 'Analyzing...'}
                </span>
            </div>
-           <div className="text-lg font-medium text-gray-100">{feedback}</div>
+           <div className="text-lg font-bold tracking-tight">{feedback}</div>
         </div>
       )}
 
-      {/* Mic Button - Elegant & Professional */}
+      {/* Mic Button - Scientist Style */}
       <button 
-        onClick={handleToggle}
-        className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-500 border
+        onClick={() => {
+            if (status === 'idle') {
+                handleToggle(); // Speak greeting
+                // Optional: Auto-listen after greeting?
+                // For now, let's allow user to trigger listen manually by clicking again or hold
+                // Ideally, we start listening after greeting finishes, but that requires complex state.
+                // Simplified: Click to hear greeting. Click again to speak.
+                setTimeout(() => {
+                    // Check direct property to avoid stale closure state issues
+                    if (recognitionRef.current && !synthesisRef.current.speaking) {
+                         try {
+                             recognitionRef.current.start();
+                         } catch (e) { /* ignore */ }
+                    }
+                }, 4000); 
+            } else {
+                handleToggle();
+            }
+        }}
+        className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center transition-all duration-500 border relative group
           ${status === 'listening' 
-            ? 'bg-red-500/10 border-red-500 text-red-500 animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.2)]' 
+            ? 'bg-red-500/20 border-red-500 text-red-500 animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.4)]' 
             : status === 'speaking'
-                ? 'bg-primary-teal/10 border-primary-teal text-primary-teal shadow-[0_0_20px_rgba(0,240,255,0.2)]'
-                : 'bg-white/5 border-white/10 text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/30'
+                ? 'bg-primary-teal/20 border-primary-teal text-primary-teal shadow-[0_0_25px_rgba(0,240,255,0.4)] animate-[spin_3s_linear_infinite]'
+                : 'bg-black/40 border-white/20 text-gray-400 hover:text-primary-teal hover:border-primary-teal hover:bg-primary-teal/10'
           }
         `}
-        title="Voice Assistant"
+        title="Activate Neural Interface"
       >
+        <div className={`absolute inset-0 rounded-full border border-dashed border-white/20 ${status === 'speaking' ? 'animate-spin-slow' : ''}`}></div>
         <i className={`fa-solid ${
             status === 'listening' ? 'fa-microphone-lines' : 
-            status === 'speaking' ? 'fa-volume-high' : 
-            'fa-microphone'
-        }`}></i>
+            status === 'speaking' ? 'fa-brain' : 
+            'fa-microchip'
+        } relative z-10`}></i>
       </button>
     </>
   );

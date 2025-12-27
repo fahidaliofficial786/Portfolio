@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { GlassCard } from '../components/GlassCard';
 import { TechStackMarquee } from '../components/TechStackMarquee';
@@ -8,6 +9,7 @@ import { SectionTitle } from '../components/SectionTitle';
 import { TestimonialCarousel } from '../components/TestimonialCarousel';
 import { FeaturedProjects } from '../components/FeaturedProjects';
 import { ExperienceSection } from '../components/ExperienceSection';
+import { Accordion } from '../components/Accordion';
 
 export const Home: React.FC = () => {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -51,7 +53,7 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <div className="pt-24 md:pt-28">
+    <div className="pt-24 md:pt-28 overflow-x-hidden">
       
       {/* Hero Section */}
       <section 
@@ -79,20 +81,20 @@ export const Home: React.FC = () => {
              </div>
         </div>
 
-        <div className="relative z-10 max-w-5xl mx-auto space-y-6">
+        <div className="relative z-10 max-w-5xl mx-auto space-y-6 w-full">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-2 animate-float">
              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-             <span className="text-sm font-mono text-primary-teal">System Operational | Open for Projects</span>
+             <span className="text-xs md:text-sm font-mono text-primary-teal">System Operational | Open for Projects</span>
           </div>
 
-          <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none drop-shadow-2xl">
+          <h1 className="text-4xl sm:text-5xl md:text-8xl font-black tracking-tighter leading-tight md:leading-none drop-shadow-2xl px-2">
             AUTOMATE <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-teal via-white to-primary-purple animate-pulse-glow">REALITY</span><br />
             SECURE <span className="text-gray-500">THE CORE.</span>
           </h1>
           
           <TerminalHero />
           
-          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-4">
+          <p className="text-base md:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-4 px-4">
             Merging High-Level Automation Logic with Military-Grade WordPress Security. 
             I build systems that sleep while you earn, and shields that stay awake while you sleep.
           </p>
@@ -111,7 +113,7 @@ export const Home: React.FC = () => {
           {/* LinkedIn Feed */}
           <div className="lg:col-span-1 w-full">
              <h3 className="text-xl font-bold mb-4 text-white text-center">See What My Clients Say</h3>
-             <GlassCard className="p-2 overflow-hidden rounded-xl h-[600px] bg-white">
+             <GlassCard className="p-2 overflow-hidden rounded-xl h-[500px] md:h-[600px] bg-white">
                 <iframe 
                    src="https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7150979542554214401" 
                    className="w-full h-full rounded-lg"
@@ -125,7 +127,7 @@ export const Home: React.FC = () => {
           {/* Fiverr Portfolio */}
           <div className="lg:col-span-2 w-full">
              <h3 className="text-xl font-bold mb-4 text-white text-center">My Proven Track Record on Fiverr</h3>
-             <GlassCard className="p-2 overflow-hidden rounded-xl h-[600px] bg-white relative">
+             <GlassCard className="p-2 overflow-hidden rounded-xl h-[500px] md:h-[600px] bg-white relative">
                 <iframe 
                    src="https://www.fiverr.com/users/fahidaliofficia/portfolio/" 
                    className="w-full h-full rounded-lg"
@@ -138,17 +140,17 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Bento Grid Services */}
-      <section id="services" className="py-32 container mx-auto max-w-7xl px-4">
+      <section id="services" className="py-20 md:py-32 container mx-auto max-w-7xl px-4">
         <SectionTitle title="System Modules" subtitle="Select a module to upgrade your business infrastructure." align="center" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(180px,auto)]">
-          <GlassCard className="md:col-span-2 md:row-span-2 p-10 flex flex-col justify-between group overflow-hidden relative border-l-4 border-l-primary-purple">
+          <GlassCard className="md:col-span-2 md:row-span-2 p-6 md:p-10 flex flex-col justify-between group overflow-hidden relative border-l-4 border-l-primary-purple">
              <div className="absolute top-0 right-0 p-32 bg-primary-purple/10 blur-[100px] rounded-full"></div>
              <div>
                 <div className="w-16 h-16 rounded-2xl bg-primary-purple/20 flex items-center justify-center text-primary-purple text-3xl mb-6">
                    <i className="fa-solid fa-robot"></i>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-4">GoHighLevel Ecosystems</h3>
-                <p className="text-gray-400 text-lg mb-6 max-w-lg">
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">GoHighLevel Ecosystems</h3>
+                <p className="text-gray-400 text-base md:text-lg mb-6 max-w-lg">
                   I don't just build funnels; I build automated empires. From AI-Booking Bots to multi-channel Reactivation Campaigns.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -164,13 +166,13 @@ export const Home: React.FC = () => {
                 </div>
              </div>
           </GlassCard>
-          <GlassCard className="md:col-span-1 md:row-span-2 p-8 border-l-4 border-l-red-500 hover:bg-red-900/10 transition-colors">
+          <GlassCard className="md:col-span-1 md:row-span-2 p-6 md:p-8 border-l-4 border-l-red-500 hover:bg-red-900/10 transition-colors">
              <div className="h-full flex flex-col">
                 <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center text-red-500 text-2xl mb-6">
                    <i className="fa-solid fa-shield-cat"></i>
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">WP Fortress</h3>
-                <p className="text-gray-400 mb-8 flex-grow">
+                <p className="text-gray-400 mb-8 flex-grow text-sm md:text-base">
                    Malware removal is just the start. I implement 6G Firewalls and Hardening protocols that hackers hate.
                 </p>
                 <ul className="space-y-4 text-sm text-gray-300">
@@ -182,8 +184,8 @@ export const Home: React.FC = () => {
                 </ul>
              </div>
           </GlassCard>
-          <GlassCard className="md:col-span-3 p-8 flex flex-col md:flex-row items-center gap-8 border border-primary-teal/20">
-             <div className="flex-1">
+          <GlassCard className="md:col-span-3 p-6 md:p-8 flex flex-col md:flex-row items-center gap-8 border border-primary-teal/20">
+             <div className="flex-1 text-center md:text-left">
                 <h3 className="text-2xl font-bold text-white mb-2">API & Custom Integrations</h3>
                 <p className="text-gray-400">Bridging the gap between GHL, WordPress, and Payment Gateways using Python/Node.js.</p>
              </div>
@@ -232,34 +234,24 @@ export const Home: React.FC = () => {
         <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
         <div className="space-y-4">
           {FAQS.map((faq, i) => (
-            <GlassCard key={i} className="p-6 cursor-pointer hover:bg-white/5 transition-colors group">
-              <details className="group">
-                <summary className="list-none flex justify-between items-center font-bold text-lg text-gray-200 cursor-pointer">
-                   {faq.question}
-                   <span className="text-primary-teal group-open:rotate-180 transition-transform"><i className="fa-solid fa-chevron-down"></i></span>
-                </summary>
-                <p className="mt-4 text-gray-400 leading-relaxed pl-2 border-l-2 border-primary-teal/30">
-                   {faq.answer}
-                </p>
-              </details>
-            </GlassCard>
+            <Accordion key={i} question={faq.question} answer={faq.answer} />
           ))}
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-32 container mx-auto max-w-6xl px-4">
+      <section id="contact" className="py-20 md:py-32 container mx-auto max-w-6xl px-4">
          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-7xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-800">
+            <h2 className="text-4xl md:text-7xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-800">
                ESTABLISH UPLINK
             </h2>
-            <p className="text-xl text-gray-400">Secure Line Ready. Select a frequency.</p>
+            <p className="text-lg md:text-xl text-gray-400">Secure Line Ready. Select a frequency.</p>
          </div>
 
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left: Functional Formspree Form */}
             <div className="space-y-8">
-               <GlassCard className="p-8">
+               <GlassCard className="p-6 md:p-8">
                   <h3 className="text-2xl font-bold mb-6">Encrypted Message</h3>
                   
                   {formStatus === 'success' ? (
@@ -318,7 +310,7 @@ export const Home: React.FC = () => {
             </div>
 
             {/* Right: Calendly Embed */}
-            <GlassCard className="p-2 h-[600px] lg:h-auto overflow-hidden">
+            <GlassCard className="p-2 h-[500px] lg:h-auto overflow-hidden">
                <iframe 
                   src={`${CONTACT_CONFIG.calendlyUrl}?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=0F1115&text_color=ffffff&primary_color=00F0FF`}
                   width="100%" 

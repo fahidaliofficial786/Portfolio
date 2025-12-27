@@ -11,18 +11,25 @@ interface NewsScript {
   createdAt: number;
 }
 
-const DEFAULT_SCRIPT = "PROMPT: [SCENE START] \n\nGood evening. This is the National News Brief. Today in Washington, officials have announced a sweeping new initiative aimed at stabilizing the domestic supply chain. The move comes as economists predict a surge in manufacturing output across the Midwest. \n\nIn international affairs, diplomatic talks in Geneva have reached a pivotal moment. Representatives from fourteen nations are gathered to discuss a landmark environmental treaty that could redefine global energy standards for the next fifty years. \n\nReporting for the network, I'm your anchor. We will continue to bring you updates as these stories develop throughout the night. [SCENE END]";
+const DEFAULT_SCRIPT = "Good evening. This is the National News Brief. Today in Washington, officials have announced a sweeping new initiative aimed at stabilizing the domestic supply chain. \n\nIn international affairs, diplomatic talks in Geneva have reached a pivotal moment. Representatives from fourteen nations are gathered to discuss a landmark environmental treaty. \n\nReporting for FHD Tech, I'm your anchor. We will continue to bring you updates as these stories develop throughout the night.";
+
+const BROADCAST_MODES = [
+  { id: 'news', label: 'News Anchor', icon: 'fa-solid fa-newspaper' },
+  { id: 'casual', label: 'Casual Chat', icon: 'fa-solid fa-mug-hot' },
+  { id: 'urgent', label: 'Breaking Alert', icon: 'fa-solid fa-triangle-exclamation' },
+  { id: 'story', label: 'Storyteller', icon: 'fa-solid fa-book-open' },
+];
 
 export const ToolsBroadcast: React.FC = () => {
   const [script, setScript] = useState<string>(DEFAULT_SCRIPT);
-  const [title, setTitle] = useState<string>("US National Briefing");
+  const [title, setTitle] = useState<string>("Daily Briefing");
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isSynthesizing, setIsSynthesizing] = useState<boolean>(false);
   const [selectedVoice, setSelectedVoice] = useState<string>(VoiceName.ZEPHYR);
+  const [selectedMode, setSelectedMode] = useState<string>('news');
   const [history, setHistory] = useState<NewsScript[]>([]);
-  const [isVibeActive, setIsVibeActive] = useState<boolean>(true);
   const [lastAudioBlob, setLastAudioBlob] = useState<Blob | null>(null);
 
-  // History persistence
   useEffect(() => {
     const saved = localStorage.getItem('broadcast_history_local');
     if (saved) setHistory(JSON.parse(saved));
@@ -42,24 +49,57 @@ export const ToolsBroadcast: React.FC = () => {
 
   const handlePlay = async () => {
     if (isPlaying) {
-      audioEngine?.stop();
+      audioEngine.stop();
       setIsPlaying(false);
-    } else {
-      if (!script.trim()) return;
-      saveToHistory();
-      setIsPlaying(true);
-      
-      const blob = await audioEngine?.speak(script, selectedVoice, () => setIsPlaying(false));
+      setIsSynthesizing(false);
+      return;
+    }
+
+    if (!script.trim()) return;
+
+    setIsSynthesizing(true);
+    saveToHistory();
+
+    // Inject Tone Instruction into the text sent to AI (but don't change visible script)
+    const toneInstruction = `[Style: ${BROADCAST_MODES.find(m => m.id === selectedMode)?.label || 'Neutral'}] `;
+    const textToSpeak = toneInstruction + script;
+
+    try {
+      const blob = await audioEngine.speak(textToSpeak, selectedVoice, () => {
+        setIsPlaying(false);
+      });
+
       if (blob) {
         setLastAudioBlob(blob);
+        setIsSynthesizing(false);
+        setIsPlaying(true);
+      } else {
+        setIsSynthesizing(false);
+        setIsPlaying(false);
       }
+    } catch (e) {
+      console.error("Playback failed:", e);
+      setIsSynthesizing(false);
+      setIsPlaying(false);
     }
   };
 
   const handleTest = async () => {
-    const testText = "Attention. This is a broadcast test of the Gemini neural system. Audio quality check complete.";
-    const blob = await audioEngine?.speak(testText, selectedVoice, () => {});
-    if (blob) setLastAudioBlob(blob);
+    if (isSynthesizing || isPlaying) return;
+    
+    setIsSynthesizing(true);
+    const testText = "System Check. FHD Neural Core is online and functioning at 100% efficiency.";
+    
+    try {
+        await audioEngine.speak(testText, selectedVoice, () => {
+            setIsPlaying(false);
+        });
+        setIsPlaying(true);
+    } catch (e) {
+        console.error(e);
+    } finally {
+        setIsSynthesizing(false);
+    }
   };
 
   const handleDownloadScript = () => {
@@ -83,120 +123,142 @@ export const ToolsBroadcast: React.FC = () => {
   };
 
   const wordCount = script.trim().split(/\s+/).length;
-  const isOverLimit = wordCount < 1500 || wordCount > 2000;
+  const isOverLimit = wordCount < 100 || wordCount > 3000;
 
   return (
-    <div className="pt-24 pb-12 min-h-screen flex flex-col bg-[#0b0f1a] text-slate-200">
-      <SEO title="Neural Broadcast" description="AI News Anchor System using Gemini TTS." />
+    <div className="pt-28 pb-12 min-h-screen flex flex-col bg-[#0b0f1a] text-slate-200 overflow-x-hidden relative z-10">
+      <SEO title="FHD Neural Broadcast" description="AI News Anchor System powered by FHD Tech." />
 
-      {/* Header / Toolbar */}
-      <header className="border-b border-slate-800 bg-[#0f172a]/95 backdrop-blur-md sticky top-20 z-40 rounded-xl mx-4 mb-6">
-        <div className="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between py-4">
-          <div className="flex items-center gap-4">
-            <div className="bg-red-600 p-2.5 rounded-lg shadow-lg shadow-red-900/30">
-              <i className="fa-solid fa-microphone text-white text-xl"></i>
-            </div>
-            <div>
-              <h1 className="text-xl font-black tracking-tighter text-white">NEURAL<span className="text-red-600">BROADCAST</span></h1>
-              <div className="flex items-center gap-2">
-                <span className="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
-                <p className="text-[9px] uppercase tracking-[0.3em] text-slate-500 font-bold">Gemini Neural Engine • US Region</p>
+      {/* Header - Relative positioning on mobile to avoid overlay issues */}
+      <div className="max-w-7xl mx-auto w-full px-4 md:px-6 mb-6 md:mb-8 relative z-30">
+        <header className="bg-[#1e293b]/90 md:bg-[#1e293b]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-4 md:p-6 shadow-2xl relative">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            
+            {/* Branding */}
+            <div className="flex items-center gap-4 w-full md:w-auto justify-center md:justify-start">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center shadow-lg shadow-red-900/40 shrink-0">
+                <i className="fa-solid fa-tower-broadcast text-white text-2xl"></i>
+              </div>
+              <div>
+                <h1 className="text-2xl font-black tracking-tight text-white leading-none">
+                  NEURAL <span className="text-red-500">BROADCAST</span>
+                </h1>
+                <div className="flex items-center gap-2 mt-1 justify-center md:justify-start">
+                  <div className="flex gap-1">
+                    <span className="w-1 h-1 bg-green-500 rounded-full animate-pulse"></span>
+                    <span className="w-1 h-1 bg-green-500 rounded-full animate-pulse delay-75"></span>
+                    <span className="w-1 h-1 bg-green-500 rounded-full animate-pulse delay-150"></span>
+                  </div>
+                  <p className="text-[10px] font-mono uppercase tracking-widest text-slate-400">FHD Tech Audio Core v2.0</p>
+                </div>
               </div>
             </div>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:flex flex-col items-end mr-4">
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">System Status</span>
-              <span className="text-xs font-mono text-green-400">ENCRYPTED / SECURE</span>
-            </div>
-            <button 
-              onClick={handleTest}
-              className="px-5 py-2 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all border border-slate-700 flex items-center gap-2"
-            >
-              <i className="fa-solid fa-volume-high"></i>
-              VOICE TEST
-            </button>
-          </div>
-        </div>
-      </header>
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Top Controls */}
+            <div className="flex items-center gap-3 w-full md:w-auto relative z-40">
+              <button 
+                onClick={handleTest}
+                disabled={isSynthesizing || isPlaying}
+                className="w-full md:w-auto px-5 py-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-all border border-slate-600 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-50 disabled:active:scale-100 touch-manipulation cursor-pointer relative z-50"
+              >
+                {isSynthesizing ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-wave-square"></i>}
+                <span>SYSTEM CHECK</span>
+              </button>
+            </div>
+          </div>
+        </header>
+      </div>
+
+      {/* Main Workspace */}
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 md:px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 pb-20 relative z-20">
         
-        {/* Left: Controls */}
-        <aside className="lg:col-span-3 space-y-6">
-          <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-5 flex items-center gap-2">
-              <i className="fa-solid fa-sliders"></i> Anchor Settings
+        {/* Left Sidebar: Config */}
+        <aside className="lg:col-span-4 space-y-6 order-2 lg:order-1 relative z-20">
+          {/* Settings Card */}
+          <div className="bg-[#1e293b]/50 border border-white/5 rounded-2xl p-5 md:p-6 backdrop-blur-sm relative z-20">
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+              <i className="fa-solid fa-sliders"></i> Configuration
             </h3>
             
-            <div className="space-y-5">
-              <div>
-                <label className="block text-[10px] font-bold text-slate-600 mb-2 uppercase tracking-widest">Select Gemini Voice</label>
-                <select 
-                  value={selectedVoice}
-                  onChange={(e) => setSelectedVoice(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-sm text-slate-300 focus:outline-none focus:ring-1 focus:ring-red-600/50 transition-all appearance-none cursor-pointer"
-                >
-                  {Object.values(VoiceName).map(v => (
-                    <option key={v} value={v}>{v}</option>
-                  ))}
-                </select>
+            <div className="space-y-6">
+              {/* Voice Selector */}
+              <div className="relative z-30">
+                <label className="block text-xs font-bold text-white mb-2 ml-1">AI VOICE MODEL</label>
+                <div className="relative">
+                  <select 
+                    value={selectedVoice}
+                    onChange={(e) => setSelectedVoice(e.target.value)}
+                    className="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-500 transition-all appearance-none cursor-pointer hover:bg-slate-900 relative z-40"
+                  >
+                    {Object.values(VoiceName).map(v => (
+                      <option key={v} value={v}>{v}</option>
+                    ))}
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none z-50">
+                    <i className="fa-solid fa-chevron-down text-xs"></i>
+                  </div>
+                </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-800">
+              {/* Mode Selector */}
+              <div className="relative z-20">
+                <label className="block text-xs font-bold text-white mb-2 ml-1">TRANSMISSION MODE</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {BROADCAST_MODES.map((mode) => (
+                    <button
+                      key={mode.id}
+                      onClick={() => setSelectedMode(mode.id)}
+                      className={`flex flex-col items-center justify-center p-3 rounded-xl border transition-all touch-manipulation relative z-30 ${
+                        selectedMode === mode.id 
+                          ? 'bg-red-600 border-red-500 text-white shadow-lg shadow-red-900/20' 
+                          : 'bg-[#0f172a] border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white'
+                      }`}
+                    >
+                      <i className={`${mode.icon} text-lg mb-2`}></i>
+                      <span className="text-[10px] font-bold uppercase">{mode.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Word Count Indicator */}
+              <div className="pt-2 border-t border-white/5">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Word Count</span>
-                  <span className={`text-xs font-mono ${isOverLimit ? 'text-amber-500' : 'text-green-500'}`}>
-                    {wordCount}
+                  <span className="text-[10px] font-bold text-slate-500 uppercase">Buffer Usage</span>
+                  <span className={`text-xs font-mono ${isOverLimit ? 'text-red-500' : 'text-green-500'}`}>
+                    {wordCount} / 3000 Words
                   </span>
                 </div>
-                <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden">
+                <div className="h-1.5 w-full bg-[#0f172a] rounded-full overflow-hidden">
                   <div 
-                    className={`h-full transition-all duration-500 ${isOverLimit ? 'bg-amber-600' : 'bg-red-600'}`}
-                    style={{ width: `${Math.min((wordCount / 2000) * 100, 100)}%` }}
+                    className={`h-full transition-all duration-500 ${isOverLimit ? 'bg-red-500' : 'bg-green-500'}`}
+                    style={{ width: `${Math.min((wordCount / 3000) * 100, 100)}%` }}
                   />
                 </div>
-                <p className="text-[10px] text-slate-600 mt-2 leading-tight">
-                  Target range: 1,500 - 2,000 words for optimal broadcast pacing.
-                </p>
-              </div>
-
-              <div className="pt-4 flex items-center justify-between">
-                <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Elastic Vibe</span>
-                <button 
-                  onClick={() => setIsVibeActive(!isVibeActive)}
-                  className={`w-10 h-5 rounded-full transition-all relative ${isVibeActive ? 'bg-red-600' : 'bg-slate-800'}`}
-                >
-                  <div className={`absolute top-1 w-3 h-3 bg-white rounded-full transition-all ${isVibeActive ? 'left-6' : 'left-1'}`} />
-                </button>
               </div>
             </div>
           </div>
 
-          <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-              <i className="fa-solid fa-clock-rotate-left"></i> Archive
+          {/* History Card (Desktop Only) */}
+          <div className="bg-[#1e293b]/50 border border-white/5 rounded-2xl p-5 hidden lg:block backdrop-blur-sm">
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+              <i className="fa-solid fa-clock-rotate-left"></i> Recent Logs
             </h3>
-            <div className="space-y-3 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+            <div className="space-y-2 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
               {history.length === 0 ? (
-                <div className="text-center py-6">
-                  <i className="fa-regular fa-file-lines text-2xl text-slate-800 mx-auto mb-2 opacity-20"></i>
-                  <p className="text-[10px] text-slate-600 uppercase font-bold">No Records</p>
+                <div className="text-center py-8 opacity-50">
+                  <i className="fa-solid fa-folder-open text-2xl mb-2"></i>
+                  <p className="text-[10px] uppercase">No archives found</p>
                 </div>
               ) : (
                 history.map(item => (
                   <button 
                     key={item.id}
                     onClick={() => { setScript(item.content); setTitle(item.title); }}
-                    className="w-full text-left p-3 rounded-xl bg-slate-950/50 border border-slate-800/50 hover:border-slate-700 transition-all group"
+                    className="w-full text-left p-3 rounded-xl bg-[#0f172a] border border-slate-800 hover:border-red-500/50 transition-all group"
                   >
-                    <div className="text-[11px] font-bold text-slate-400 truncate group-hover:text-white">{item.title}</div>
-                    <div className="text-[9px] text-slate-600 mt-1 flex justify-between items-center">
-                      <span>{new Date(item.createdAt).toLocaleDateString()}</span>
-                      <i className="fa-regular fa-clock text-[10px]"></i>
-                    </div>
+                    <div className="text-xs font-bold text-slate-300 truncate group-hover:text-white mb-1">{item.title}</div>
+                    <div className="text-[10px] text-slate-600 font-mono">{new Date(item.createdAt).toLocaleDateString()}</div>
                   </button>
                 ))
               )}
@@ -204,153 +266,107 @@ export const ToolsBroadcast: React.FC = () => {
           </div>
         </aside>
 
-        {/* Center: Script Editor */}
-        <section className="lg:col-span-6 flex flex-col gap-6">
-          <div className="flex-1 bg-slate-900/30 border border-slate-800 rounded-3xl p-8 relative overflow-hidden flex flex-col shadow-inner min-h-[500px]">
-            <div className="flex items-center justify-between mb-6">
-              <input 
+        {/* Center: Main Editor */}
+        <section className="lg:col-span-8 flex flex-col gap-4 order-1 lg:order-2 h-full relative z-20">
+          
+          {/* Editor Surface */}
+          <div className="flex-1 bg-[#1e293b]/80 border border-white/10 rounded-3xl p-6 md:p-8 relative flex flex-col shadow-2xl backdrop-blur-md min-h-[500px] z-20">
+            
+            {/* Status Bar */}
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6 pb-4 border-b border-white/5 gap-4 relative z-30">
+               <input 
                 type="text" 
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="bg-transparent border-none text-2xl font-black text-white focus:outline-none w-full placeholder-slate-800 tracking-tight"
-                placeholder="REPORT TITLE..."
+                className="bg-transparent border-none text-xl font-bold text-white focus:outline-none w-full placeholder-slate-600 relative z-40"
+                placeholder="ENTER BROADCAST TITLE..."
               />
-              <div className="flex gap-2">
-                 <div className="px-3 py-1 bg-red-600/10 text-red-500 rounded text-[10px] font-black uppercase tracking-widest border border-red-600/20">LIVE</div>
+              <div className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border transition-colors shrink-0 ${
+                isPlaying 
+                  ? 'bg-red-500/20 text-red-500 border-red-500 animate-pulse' 
+                  : 'bg-slate-800 text-slate-500 border-slate-700'
+              }`}>
+                {isPlaying ? 'ON AIR' : isSynthesizing ? 'PROCESSING' : 'STANDBY'}
               </div>
             </div>
 
+            {/* Text Area - High Z-Index for clickability */}
             <textarea 
               value={script}
               onChange={(e) => setScript(e.target.value)}
-              className="flex-1 bg-transparent border-none text-slate-300 resize-none focus:outline-none font-medium leading-relaxed text-lg custom-scrollbar placeholder-slate-800"
-              placeholder="Paste news transcript here..."
+              className="flex-1 bg-transparent border-none text-slate-300 resize-none focus:outline-none font-medium leading-relaxed text-lg custom-scrollbar placeholder-slate-700 font-sans relative z-30"
+              placeholder="Enter news script or narrative here..."
+              style={{ pointerEvents: 'auto' }}
             />
 
-            <div className="absolute bottom-6 left-8 right-8 flex justify-between items-center pointer-events-none opacity-40">
-               <span className="text-[9px] font-bold tracking-[0.4em] uppercase text-slate-600">Secure News Terminal V4.0</span>
-               <div className="flex gap-1">
-                 {[...Array(5)].map((_, i) => <div key={i} className="w-1 h-3 bg-red-600/50" />)}
+            {/* Action Bar */}
+            <div className="pt-6 mt-4 border-t border-white/5 flex flex-col sm:flex-row gap-4 relative z-30">
+               
+               {/* Play/Stop Button */}
+               <button 
+                  onClick={handlePlay}
+                  disabled={isSynthesizing}
+                  className={`flex-grow py-4 rounded-xl font-black text-sm tracking-widest uppercase flex items-center justify-center gap-3 transition-all transform active:scale-[0.98] touch-manipulation cursor-pointer relative z-40 ${
+                    isSynthesizing
+                      ? 'bg-slate-700 text-slate-400 cursor-wait'
+                      : isPlaying
+                        ? 'bg-slate-800 text-red-500 border border-red-500/50 hover:bg-slate-900'
+                        : 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:shadow-[0_0_30px_rgba(220,38,38,0.4)]'
+                  }`}
+               >
+                  {isSynthesizing ? (
+                    <>
+                       <i className="fa-solid fa-gear fa-spin text-lg"></i> Initializing Core...
+                    </>
+                  ) : isPlaying ? (
+                    <>
+                       <i className="fa-solid fa-square text-lg"></i> Terminate Feed
+                    </>
+                  ) : (
+                    <>
+                       <i className="fa-solid fa-play text-lg"></i> Initiate Broadcast
+                    </>
+                  )}
+               </button>
+
+               {/* Downloads */}
+               <div className="flex gap-2 relative z-40">
+                  <button 
+                    onClick={handleDownloadAudio}
+                    disabled={!lastAudioBlob}
+                    className="h-full px-6 py-4 md:py-0 rounded-xl bg-[#0f172a] border border-slate-700 text-blue-400 hover:bg-slate-800 hover:text-white transition-all disabled:opacity-30 disabled:cursor-not-allowed touch-manipulation"
+                    title="Export Audio"
+                  >
+                    <i className="fa-solid fa-download text-xl"></i>
+                  </button>
+                  <button 
+                    onClick={handleDownloadScript}
+                    className="h-full px-6 py-4 md:py-0 rounded-xl bg-[#0f172a] border border-slate-700 text-slate-400 hover:bg-slate-800 hover:text-white transition-all touch-manipulation"
+                    title="Export Script"
+                  >
+                    <i className="fa-solid fa-file-lines text-xl"></i>
+                  </button>
                </div>
             </div>
           </div>
-
-          <div className="flex gap-4">
-            <button 
-              onClick={handlePlay}
-              className={`flex-1 py-5 rounded-2xl flex items-center justify-center gap-4 transition-all active:scale-[0.98] shadow-2xl shadow-red-900/20 font-black text-sm tracking-widest uppercase ${
-                isPlaying 
-                ? 'bg-slate-800 text-red-500 border border-red-900/50 animate-pulse' 
-                : 'bg-gradient-to-br from-red-600 to-red-800 hover:from-red-500 hover:to-red-700 text-white shadow-red-600/20'
-              }`}
-            >
-              {isPlaying ? <i className="fa-solid fa-pause text-xl"></i> : <i className="fa-solid fa-play text-xl"></i>}
-              {isPlaying ? 'ABORT BROADCAST' : 'START BROADCAST'}
-            </button>
-
-            <div className="flex gap-2">
-              <button 
-                onClick={handleDownloadAudio}
-                disabled={!lastAudioBlob}
-                className="px-6 py-5 rounded-2xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-blue-400 transition-all active:scale-95 disabled:opacity-20 disabled:grayscale"
-                title="Download Broadcast Voice"
-              >
-                <i className="fa-solid fa-file-audio text-xl"></i>
-              </button>
-              
-              <button 
-                onClick={handleDownloadScript}
-                className="px-6 py-5 rounded-2xl bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-400 transition-all active:scale-95"
-                title="Download Script Text"
-              >
-                <i className="fa-solid fa-file-lines text-xl"></i>
-              </button>
-            </div>
-
-            <button 
-              onClick={() => { setScript(''); setLastAudioBlob(null); }}
-              className="px-6 py-5 rounded-2xl bg-slate-900 border border-slate-800 hover:bg-red-900/20 hover:text-red-500 transition-all active:scale-95 text-slate-600"
-              title="Clear Terminal"
-            >
-              <i className="fa-solid fa-trash text-xl"></i>
-            </button>
-          </div>
         </section>
 
-        {/* Right: Monitoring */}
-        <aside className="lg:col-span-3 space-y-6">
-          <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6 flex flex-col items-center">
-            <div className="w-32 h-32 rounded-full border-4 border-slate-800 flex items-center justify-center relative mb-6">
-              <i className={`fa-solid fa-chart-line text-4xl ${isPlaying ? 'text-red-500 animate-pulse' : 'text-slate-800'}`}></i>
-              {isPlaying && (
-                <div className="absolute inset-0 rounded-full border-4 border-red-600 animate-ping opacity-20" />
-              )}
-            </div>
-            <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Current Modality</h4>
-            <p className="text-sm font-black text-white tracking-tight uppercase">Gemini Neural Engine</p>
-            
-            <div className="w-full mt-8 space-y-4">
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-[9px] font-bold text-slate-600 uppercase">Elasticity</span>
-                  <span className="text-[9px] font-mono text-red-500">60Hz</span>
-                </div>
-                <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
-                   <div className={`h-full bg-red-600 transition-all duration-1000 ${isPlaying ? 'w-2/3' : 'w-1/4'}`} />
-                </div>
-              </div>
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-[9px] font-bold text-slate-600 uppercase">Resonance</span>
-                  <span className="text-[9px] font-mono text-red-500">HI-FI</span>
-                </div>
-                <div className="h-1 w-full bg-slate-900 rounded-full overflow-hidden">
-                   <div className={`h-full bg-red-600 transition-all duration-700 ${isPlaying ? 'w-full' : 'w-1/2'}`} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-red-950/10 border border-red-900/20 rounded-2xl p-6">
-            <div className="flex items-center gap-3 text-red-500 mb-3">
-              <i className="fa-solid fa-circle-exclamation"></i>
-              <span className="text-xs font-black uppercase tracking-widest">Network Alert</span>
-            </div>
-            <p className="text-[11px] leading-relaxed text-red-400/80 font-medium italic">
-              "This tool is powered by Gemini 2.5 Flash TTS for professional-grade news broadcasting. All generations are processed securely via Neural Broadcast protocol."
-            </p>
-          </div>
-        </aside>
       </main>
 
-      {/* Ticker Footer */}
-      <footer className="bg-red-600 py-1.5 overflow-hidden flex items-center border-t-2 border-slate-900 mt-12">
-        <div className="bg-black px-4 py-1 flex items-center shrink-0 z-10 skew-x-[-20deg] -ml-2">
-          <span className="text-white text-[10px] font-black italic tracking-tighter uppercase skew-x-[20deg]">NEWS TICKER</span>
-        </div>
-        <div className="flex gap-12 animate-marquee items-center text-white text-[10px] font-black uppercase tracking-widest whitespace-nowrap">
-          <span>• GEMINI NEURAL BROADCAST SYSTEM ENGAGED • HIGH FIDELITY TTS ENABLED • REAL-TIME US NEWS SYNTHESIS • ELASTIC VIBE FREQUENCY STABLE • REPORTING FROM STUDIO 4 • 1500-2000 WORD BUFFER ENABLED • VOICE EXPORT READY •</span>
-          <span>• GEMINI NEURAL BROADCAST SYSTEM ENGAGED • HIGH FIDELITY TTS ENABLED • REAL-TIME US NEWS SYNTHESIS • ELASTIC VIBE FREQUENCY STABLE • REPORTING FROM STUDIO 4 • 1500-2000 WORD BUFFER ENABLED • VOICE EXPORT READY •</span>
-        </div>
-      </footer>
-
+      {/* Global Style overrides for this page */}
       <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 40s linear infinite;
-        }
         .custom-scrollbar::-webkit-scrollbar {
-          width: 5px;
+          width: 6px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-          background: rgba(0, 0, 0, 0.2);
+          background: rgba(0, 0, 0, 0.1);
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: #334155;
-          border-radius: 5px;
+          background: #475569;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #64748b;
         }
       `}</style>
     </div>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { GlassCard } from '../components/GlassCard';
 import { SectionTitle } from '../components/SectionTitle';
@@ -108,7 +109,7 @@ const ViralHeadlineGen = () => {
                     onChange={(e) => setTopic(e.target.value)}
                     className="flex-1 bg-black/30 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-yellow-400 outline-none"
                 />
-                <button type="submit" disabled={loading} className="bg-yellow-500 text-black font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-all disabled:opacity-50">
+                <button type="submit" disabled={loading} className="bg-yellow-500 text-black font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-all disabled:opacity-50 touch-manipulation cursor-pointer">
                     {loading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : 'Generate'}
                 </button>
             </form>
@@ -185,7 +186,7 @@ const HashtagGen = () => {
                     onChange={(e) => setInput(e.target.value)}
                     className="flex-1 bg-black/30 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-primary-purple outline-none"
                 />
-                <button onClick={generateTags} disabled={loading} className="bg-primary-purple/20 text-primary-purple border border-primary-purple/50 px-4 py-2 rounded hover:bg-primary-purple hover:text-white transition-all disabled:opacity-50">
+                <button onClick={generateTags} disabled={loading} className="bg-primary-purple/20 text-primary-purple border border-primary-purple/50 px-4 py-2 rounded hover:bg-primary-purple hover:text-white transition-all disabled:opacity-50 touch-manipulation cursor-pointer">
                      {loading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : 'Create'}
                 </button>
             </div>
@@ -237,13 +238,13 @@ const GlobalPulse = () => {
 
 export const ToolsTrends: React.FC = () => {
   return (
-    <div className="pt-24 pb-12 container mx-auto max-w-7xl px-4">
+    <div className="pt-28 pb-12 container mx-auto max-w-7xl px-4 relative z-10">
       <SEO 
         title="Trend Intelligence"
         description="Monitor trending topics and generate viral content ideas with FHD Tech's Trend Intelligence suite."
       />
 
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 relative z-20">
          <div className="inline-block p-2 px-4 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-500 mb-4 font-mono text-xs tracking-widest">
             MARKET_INTEL // LIVE FEED ACTIVE
          </div>
@@ -252,11 +253,11 @@ export const ToolsTrends: React.FC = () => {
 
       <TrendsTicker />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 relative z-20">
          <ViralHeadlineGen />
          <HashtagGen />
       </div>
-      <div className="grid grid-cols-1 gap-8">
+      <div className="grid grid-cols-1 gap-8 relative z-20">
          <GlobalPulse />
       </div>
     </div>

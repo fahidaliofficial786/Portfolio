@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { GlassCard } from './GlassCard';
 
@@ -29,7 +30,7 @@ export const NetworkScanner: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed top-24 left-6 z-30 hidden xl:block w-64">
+    <div className="fixed top-24 left-6 z-30 hidden xl:block w-64 pointer-events-auto">
        <GlassCard className="p-4 !bg-[#050505]/80 !border-white/5 relative overflow-hidden">
           {/* Scan Line Animation */}
           {status === 'scanning' && (

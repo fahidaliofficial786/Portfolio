@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 
 export const BirdsBackground: React.FC = () => {
@@ -116,5 +117,6 @@ export const BirdsBackground: React.FC = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />;
+  // Strict z-index -1 ensures it is behind standard DOM elements (z-0)
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-[-1]" />;
 };

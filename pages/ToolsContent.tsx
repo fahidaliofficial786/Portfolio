@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { GlassCard } from '../components/GlassCard';
 import { SectionTitle } from '../components/SectionTitle';
@@ -38,15 +39,15 @@ export const ToolsContent: React.FC = () => {
     };
 
     return (
-        <div className="pt-24 pb-12 container mx-auto max-w-5xl px-4">
+        <div className="pt-28 pb-12 container mx-auto max-w-5xl px-4 relative z-10">
             <SEO title="AI Content Forge" description="Generate full blog posts with structured HTML using AI." />
             
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 relative z-20">
                  <div className="inline-block p-2 px-4 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-500 mb-4 font-mono text-xs tracking-widest">CONTENT_FORGE</div>
                  <SectionTitle title="AI Blog Architect" align="center" subtitle="Generate structured, SEO-ready articles in seconds." />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative z-20">
                 {/* Controls */}
                 <div className="lg:col-span-1">
                     <GlassCard className="sticky top-24">
@@ -64,7 +65,7 @@ export const ToolsContent: React.FC = () => {
                                     <option>Humorous</option>
                                 </select>
                             </div>
-                            <button type="submit" disabled={loading} className="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded hover:shadow-lg disabled:opacity-50 transition-all">
+                            <button type="submit" disabled={loading} className="w-full py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded hover:shadow-lg disabled:opacity-50 transition-all touch-manipulation cursor-pointer">
                                 {loading ? <><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Writing...</> : 'Generate Article'}
                             </button>
                         </form>

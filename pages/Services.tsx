@@ -125,9 +125,9 @@ export const Services: React.FC = () => {
       {/* CTA */}
       <div className="text-center">
         <h2 className="text-3xl font-bold text-white mb-8">Unsure which module you need?</h2>
-        <a href="#/contact" className="px-8 py-4 bg-white text-black font-bold rounded-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all">
+        <Link to={PageRoutes.CONTACT} className="px-8 py-4 bg-white text-black font-bold rounded-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all inline-block">
           Book a Free Strategy Call
-        </a>
+        </Link>
       </div>
     </div>
   );

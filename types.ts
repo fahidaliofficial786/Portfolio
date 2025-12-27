@@ -87,7 +87,8 @@ export enum PageRoutes {
   TOOLS_SOCIAL = '/tools/social',
   TOOLS_CONTENT = '/tools/content',
   TOOLS_NEWS = '/tools/news',
-  TOOLS_BROADCAST = '/tools/broadcast', // New Neural Broadcast Tool
+  TOOLS_BROADCAST = '/tools/broadcast', 
+  TOOLS_IMAGE_GEN = '/tools/image-gen', // New Bulk Image Generator
 
   ABOUT = '/about',
   CONTACT = '/contact',
@@ -104,4 +105,19 @@ export enum VoiceName {
   KORE = 'Kore',
   FENRIR = 'Fenrir',
   ZEPHYR = 'Zephyr'
+}
+
+// Image Generator Types
+export interface GeneratedImage {
+  id: string;
+  prompt: string;
+  url: string; // base64 data url
+  timestamp: number;
+}
+
+export enum GenerationStatus {
+  IDLE = 'idle',
+  GENERATING = 'generating',
+  COMPLETED = 'completed',
+  ERROR = 'error'
 }

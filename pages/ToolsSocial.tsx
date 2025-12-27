@@ -55,7 +55,7 @@ const YouTubeGenerator = () => {
                     className="flex-1 bg-black/30 border border-white/10 rounded p-3 text-white focus:border-red-500 outline-none transition-colors" 
                     onKeyDown={(e) => e.key === 'Enter' && generate()}
                 />
-                <button onClick={generate} disabled={loading} className="bg-red-500 text-white px-6 rounded font-bold hover:bg-red-600 disabled:opacity-50 transition-colors shadow-[0_0_15px_rgba(239,68,68,0.4)]">
+                <button onClick={generate} disabled={loading} className="bg-red-500 text-white px-6 rounded font-bold hover:bg-red-600 disabled:opacity-50 transition-colors shadow-[0_0_15px_rgba(239,68,68,0.4)] touch-manipulation cursor-pointer">
                     {loading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : 'Generate'}
                 </button>
             </div>
@@ -143,7 +143,7 @@ const InstagramBio = () => {
                     className="flex-1 bg-black/30 border border-white/10 rounded p-3 text-white focus:border-pink-500 outline-none transition-colors" 
                     onKeyDown={(e) => e.key === 'Enter' && generate()}
                 />
-                <button onClick={generate} disabled={loading} className="bg-pink-500 text-white px-6 rounded font-bold hover:bg-pink-600 disabled:opacity-50 transition-colors shadow-[0_0_15px_rgba(236,72,153,0.4)]">
+                <button onClick={generate} disabled={loading} className="bg-pink-500 text-white px-6 rounded font-bold hover:bg-pink-600 disabled:opacity-50 transition-colors shadow-[0_0_15px_rgba(236,72,153,0.4)] touch-manipulation cursor-pointer">
                     {loading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : 'Create'}
                 </button>
             </div>
@@ -173,13 +173,13 @@ const InstagramBio = () => {
 
 export const ToolsSocial: React.FC = () => {
     return (
-        <div className="pt-24 pb-12 container mx-auto max-w-7xl px-4">
+        <div className="pt-28 pb-12 container mx-auto max-w-7xl px-4 relative z-10">
             <SEO title="Social Media Tools" description="AI Tools for YouTube, Instagram, and Facebook growth." />
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 relative z-20">
                  <div className="inline-block p-2 px-4 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-500 mb-4 font-mono text-xs tracking-widest">SOCIAL_HQ</div>
                  <SectionTitle title="Social Media Headquarters" align="center" subtitle="Optimize your presence with AI-driven metadata." />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-20">
                 <YouTubeGenerator />
                 <InstagramBio />
             </div>

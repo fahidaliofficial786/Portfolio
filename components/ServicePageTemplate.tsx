@@ -5,6 +5,7 @@ import { SectionTitle } from './SectionTitle';
 import { SEO } from './SEO';
 import { CONTACT_CONFIG, SOCIAL_LINKS } from '../constants';
 import { ServicePageData } from '../data/services';
+import { Accordion } from './Accordion';
 
 interface ServicePageTemplateProps {
   data: ServicePageData;
@@ -42,17 +43,17 @@ export const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({ data }
 
       {/* 1. HERO */}
       <section className="container mx-auto max-w-7xl px-4 mb-20 text-center relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary-teal/10 rounded-full blur-[120px] -z-10"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[500px] h-[300px] md:h-[500px] bg-primary-teal/10 rounded-full blur-[80px] md:blur-[120px] -z-10"></div>
         <div className="inline-block p-2 px-4 rounded-full border border-primary-teal/30 bg-primary-teal/10 text-primary-teal mb-6 font-mono text-xs tracking-widest uppercase animate-float">
            {data.id.replace('-', ' ')} MODULE ACTIVE
         </div>
-        <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-none">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-6 leading-none">
           {data.hero.title} <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-teal to-blue-500">
             {data.hero.highlight}
           </span>
         </h1>
-        <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed px-4">
           {data.hero.subtitle}
         </p>
         <div className="mt-8">
@@ -230,10 +231,10 @@ export const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({ data }
             <div className="absolute top-0 right-0 p-32 bg-primary-teal/10 blur-[100px] rounded-full"></div>
             <h3 className="text-gray-400 uppercase tracking-widest text-sm mb-4">Case Study Highlight</h3>
             <h2 className="text-3xl md:text-4xl font-black text-white mb-2">{data.caseStudy.title}</h2>
-            <div className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary-teal to-white my-6">
+            <div className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary-teal to-white my-6">
                 {data.caseStudy.metric}
             </div>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">{data.caseStudy.desc}</p>
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">{data.caseStudy.desc}</p>
          </div>
       </section>
 
@@ -242,17 +243,7 @@ export const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({ data }
         <SectionTitle title="Operational FAQs" align="center" />
         <div className="space-y-4">
           {data.faqs.map((faq, i) => (
-            <GlassCard key={i} className="p-6 cursor-pointer hover:bg-white/5 transition-colors group">
-              <details className="group">
-                <summary className="list-none flex justify-between items-center font-bold text-lg text-gray-200 cursor-pointer">
-                   {faq.question}
-                   <span className="text-primary-teal group-open:rotate-180 transition-transform"><i className="fa-solid fa-chevron-down"></i></span>
-                </summary>
-                <p className="mt-4 text-gray-400 leading-relaxed pl-2 border-l-2 border-primary-teal/30">
-                   {faq.answer}
-                </p>
-              </details>
-            </GlassCard>
+            <Accordion key={i} question={faq.question} answer={faq.answer} />
           ))}
         </div>
       </section>
@@ -265,7 +256,7 @@ export const ServicePageTemplate: React.FC<ServicePageTemplateProps> = ({ data }
 
          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Form */}
-            <GlassCard className="p-8">
+            <GlassCard className="p-6 md:p-8">
                <h3 className="text-2xl font-bold text-white mb-6">Project Request: {data.seoTitle}</h3>
                {formStatus === 'success' ? (
                   <div className="text-center py-12">

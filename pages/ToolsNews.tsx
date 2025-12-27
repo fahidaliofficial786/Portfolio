@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { GlassCard } from '../components/GlassCard';
 import { SectionTitle } from '../components/SectionTitle';
@@ -33,21 +34,21 @@ export const ToolsNews: React.FC = () => {
     }, [category]);
 
     return (
-        <div className="pt-24 pb-12 container mx-auto max-w-7xl px-4">
+        <div className="pt-28 pb-12 container mx-auto max-w-7xl px-4 relative z-10">
             <SEO title="Global News Deck" description="Live Real-Time News Aggregator." />
             
-            <div className="text-center mb-8">
+            <div className="text-center mb-8 relative z-20">
                  <div className="inline-block p-2 px-4 rounded-full border border-teal-500/30 bg-teal-500/10 text-teal-500 mb-4 font-mono text-xs tracking-widest">LIVE_SATELLITE_FEED</div>
                  <SectionTitle title="Global News Deck" align="center" subtitle="Real-time intelligence from around the world." />
             </div>
 
             {/* Category Filter */}
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
+            <div className="flex flex-wrap justify-center gap-4 mb-12 relative z-30">
                 {Object.keys(FEEDS).map((cat) => (
                     <button 
                         key={cat} 
                         onClick={() => setCategory(cat as any)}
-                        className={`px-6 py-2 rounded-full font-bold uppercase text-sm border transition-all ${
+                        className={`px-6 py-2 rounded-full font-bold uppercase text-sm border transition-all touch-manipulation cursor-pointer ${
                             category === cat 
                             ? 'bg-teal-500 text-black border-teal-500' 
                             : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'
@@ -60,12 +61,12 @@ export const ToolsNews: React.FC = () => {
 
             {/* News Grid */}
             {loading ? (
-                <div className="text-center py-20 text-teal-500">
+                <div className="text-center py-20 text-teal-500 relative z-20">
                     <i className="fa-solid fa-satellite-dish fa-spin text-4xl mb-4"></i>
                     <p>Establishing Uplink...</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-20">
                     {news.map((item, i) => (
                         <GlassCard key={i} className="flex flex-col h-full hover:border-teal-500/30 transition-all hover:-translate-y-1">
                             <h3 className="text-lg font-bold text-white mb-2 line-clamp-2">{item.title}</h3>

@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { GlassCard } from './GlassCard';
 import { SOCIAL_LINKS, SECURITY_PRICING } from '../constants';
@@ -82,15 +83,17 @@ export const AIChatWidget: React.FC = () => {
     }, 1500);
   };
 
+  // pointer-events-none on container ensures the empty space doesn't block page clicks.
+  // pointer-events-auto on children ensures chat and button are clickable.
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-6 right-6 z-[90] flex flex-col items-end pointer-events-none">
       
       {/* Chat Window */}
       <div 
-        className={`transition-all duration-300 origin-bottom-right mb-4 ${
+        className={`transition-all duration-300 origin-bottom-right mb-4 pointer-events-auto ${
           isOpen 
             ? 'opacity-100 scale-100 translate-y-0' 
-            : 'opacity-0 scale-95 translate-y-10 pointer-events-none'
+            : 'opacity-0 scale-95 translate-y-10'
         }`}
       >
         <GlassCard className="w-[350px] h-[500px] flex flex-col p-0 overflow-hidden border-primary-teal/30 shadow-[0_0_50px_rgba(0,0,0,0.5)] bg-[#0F1115]/95">
@@ -170,7 +173,7 @@ export const AIChatWidget: React.FC = () => {
       {/* Trigger Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="group relative w-14 h-14 bg-gradient-to-tr from-primary-teal to-blue-500 rounded-full flex items-center justify-center text-black shadow-lg hover:scale-110 transition-transform duration-300"
+        className="group relative w-14 h-14 bg-gradient-to-tr from-primary-teal to-blue-500 rounded-full flex items-center justify-center text-black shadow-lg hover:scale-110 transition-transform duration-300 pointer-events-auto"
       >
         <div className="absolute inset-0 bg-primary-teal rounded-full blur opacity-40 group-hover:opacity-75 animate-pulse"></div>
         <i className={`fa-solid ${isOpen ? 'fa-chevron-down' : 'fa-robot'} text-2xl relative z-10 transition-transform ${isOpen ? 'rotate-180' : ''}`}></i>

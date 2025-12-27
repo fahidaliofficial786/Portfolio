@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { GlassCard } from '../components/GlassCard';
 import { SectionTitle } from '../components/SectionTitle';
@@ -13,10 +14,6 @@ const SERPSimulator = () => {
     const [url, setUrl] = useState('https://mysite.com/awesome-page');
     const [isMobile, setIsMobile] = useState(false);
 
-    // Google visual constraints (approx)
-    const TITLE_MAX = 600; // px
-    const DESC_MAX = 160; // chars
-
     return (
         <GlassCard className="h-full flex flex-col">
             <div className="flex justify-between items-center mb-6">
@@ -25,8 +22,8 @@ const SERPSimulator = () => {
                     <h3 className="text-xl font-bold text-white">SERP Preview</h3>
                 </div>
                 <div className="flex bg-white/10 rounded p-1">
-                    <button onClick={() => setIsMobile(false)} className={`px-3 py-1 rounded text-xs ${!isMobile ? 'bg-white text-black' : 'text-gray-400'}`}><i className="fa-solid fa-desktop"></i></button>
-                    <button onClick={() => setIsMobile(true)} className={`px-3 py-1 rounded text-xs ${isMobile ? 'bg-white text-black' : 'text-gray-400'}`}><i className="fa-solid fa-mobile-screen"></i></button>
+                    <button onClick={() => setIsMobile(false)} className={`px-3 py-1 rounded text-xs touch-manipulation ${!isMobile ? 'bg-white text-black' : 'text-gray-400'}`}><i className="fa-solid fa-desktop"></i></button>
+                    <button onClick={() => setIsMobile(true)} className={`px-3 py-1 rounded text-xs touch-manipulation ${isMobile ? 'bg-white text-black' : 'text-gray-400'}`}><i className="fa-solid fa-mobile-screen"></i></button>
                 </div>
             </div>
 
@@ -133,7 +130,7 @@ const KeywordDensity = () => {
                 onChange={(e) => setText(e.target.value)}
             ></textarea>
             
-            <button onClick={analyze} className="bg-green-500/20 text-green-500 border border-green-500/50 px-4 py-2 rounded hover:bg-green-500 hover:text-white transition-all mb-4 font-bold">
+            <button onClick={analyze} className="bg-green-500/20 text-green-500 border border-green-500/50 px-4 py-2 rounded hover:bg-green-500 hover:text-white transition-all mb-4 font-bold touch-manipulation cursor-pointer">
                 Run Analysis
             </button>
 
@@ -190,7 +187,7 @@ const RobotsGen = () => {
             </div>
             <div className="relative bg-[#1a1a1a] p-4 rounded-lg border border-white/10 group">
                 <pre className="text-orange-400 text-xs font-mono whitespace-pre-wrap">{output}</pre>
-                <button onClick={() => navigator.clipboard.writeText(output)} className="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">Copy File</button>
+                <button onClick={() => navigator.clipboard.writeText(output)} className="absolute top-2 right-2 text-xs bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity touch-manipulation cursor-pointer">Copy File</button>
             </div>
         </GlassCard>
     );
@@ -198,13 +195,13 @@ const RobotsGen = () => {
 
 export const ToolsSEO: React.FC = () => {
   return (
-    <div className="pt-24 pb-12 container mx-auto max-w-7xl px-4">
+    <div className="pt-28 pb-12 container mx-auto max-w-7xl px-4 relative z-10">
       <SEO 
         title="SEO Audit Station"
         description="Professional SEO Tools by FHD Tech. Advanced SERP Simulator, Stop-word filtered Density Checker, and Technical Generators."
       />
 
-      <div className="text-center mb-16">
+      <div className="text-center mb-16 relative z-20">
          <div className="inline-block p-2 px-4 rounded-full border border-green-500/30 bg-green-500/10 text-green-500 mb-4 font-mono text-xs tracking-widest">
             OPTIMIZATION_MODULE // V2.1 ONLINE
          </div>
