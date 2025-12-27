@@ -84,16 +84,16 @@ export const AIChatWidget: React.FC = () => {
   };
 
   // pointer-events-none on container ensures the empty space doesn't block page clicks.
-  // pointer-events-auto on children ensures chat and button are clickable.
+  // We dynamically toggle pointer-events-auto/none on the chat window based on isOpen state.
   return (
     <div className="fixed bottom-6 right-6 z-[90] flex flex-col items-end pointer-events-none">
       
       {/* Chat Window */}
       <div 
-        className={`transition-all duration-300 origin-bottom-right mb-4 pointer-events-auto ${
+        className={`transition-all duration-300 origin-bottom-right mb-4 ${
           isOpen 
-            ? 'opacity-100 scale-100 translate-y-0' 
-            : 'opacity-0 scale-95 translate-y-10'
+            ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto' 
+            : 'opacity-0 scale-95 translate-y-10 pointer-events-none'
         }`}
       >
         <GlassCard className="w-[350px] h-[500px] flex flex-col p-0 overflow-hidden border-primary-teal/30 shadow-[0_0_50px_rgba(0,0,0,0.5)] bg-[#0F1115]/95">
