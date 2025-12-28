@@ -4,7 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 export const geminiService = {
   generateImage: async (prompt: string, aspectRatio: string): Promise<string> => {
     // Initialize AI Client
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: "AIzaSyDa3xvE22ggiawdxdYCUKj3FaqVpbZ74_8" });
     
     // Call generateContent with image model and config
     // Note: Gemini 2.5 Flash Image uses 'generateContent' with text input to produce image output

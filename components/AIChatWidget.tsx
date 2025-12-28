@@ -89,7 +89,7 @@ export const AIChatWidget: React.FC = () => {
 
     try {
       // 2. Call Gemini API
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey: "AIzaSyDa3xvE22ggiawdxdYCUKj3FaqVpbZ74_8" });
       const model = "gemini-3-flash-preview"; 
       
       // Prepare history for API
@@ -138,6 +138,8 @@ export const AIChatWidget: React.FC = () => {
     }
   };
 
+  // pointer-events-none on container ensures the empty space doesn't block page clicks.
+  // We dynamically toggle pointer-events-auto/none on the chat window based on isOpen state.
   return (
     <div className="fixed bottom-6 right-6 z-[90] flex flex-col items-end pointer-events-none">
       
@@ -149,21 +151,23 @@ export const AIChatWidget: React.FC = () => {
             : 'opacity-0 scale-95 translate-y-10 pointer-events-none'
         }`}
       >
-        <GlassCard className="w-[90vw] max-w-[350px] h-[500px] max-h-[80vh] flex flex-col p-0 overflow-hidden border-primary-teal/30 shadow-[0_0_50px_rgba(0,0,0,0.5)] bg-[#0F1115]/95">
+        <GlassCard className="w-[350px] h-[500px] flex flex-col p-0 overflow-hidden border-primary-teal/30 shadow-[0_0_50px_rgba(0,0,0,0.5)] bg-[#0F1115]/95">
           
           {/* Header */}
           <div className="p-4 bg-gradient-to-r from-primary-teal/20 to-purple-500/20 border-b border-white/10 flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-primary-teal flex items-center justify-center text-black relative">
+              <div className="w-8 h-8 rounded-full bg-primary-teal flex items-center justify-center text-black">
                 <i className="fa-solid fa-robot"></i>
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-[#0F1115] rounded-full"></span>
               </div>
               <div>
-                <h3 className="font-bold text-white text-sm">FHD Assistant</h3>
-                <span className="text-[10px] text-gray-400">Powered by Gemini 3.0</span>
+                <h3 className="font-bold text-white text-sm">FHD AI Assistant</h3>
+                <div className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                  <span className="text-[10px] text-gray-400">Online</span>
+                </div>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
+            <button onClick={() => setIsOpen(false)} className="text-gray-400 hover:text-white">
               <i className="fa-solid fa-xmark"></i>
             </button>
           </div>
@@ -176,10 +180,10 @@ export const AIChatWidget: React.FC = () => {
                 className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div 
-                  className={`max-w-[85%] p-3 rounded-xl text-sm leading-relaxed ${
+                  className={`max-w-[80%] p-3 rounded-xl text-sm ${
                     msg.sender === 'user' 
-                      ? 'bg-primary-teal text-black rounded-tr-none font-medium' 
-                      : 'bg-[#1e293b] text-gray-200 rounded-tl-none border border-white/5'
+                      ? 'bg-primary-teal text-black rounded-tr-none' 
+                      : 'bg-white/10 text-gray-200 rounded-tl-none border border-white/5'
                   }`}
                 >
                   {/* Basic markdown-like link rendering */}
@@ -193,10 +197,10 @@ export const AIChatWidget: React.FC = () => {
             ))}
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-[#1e293b] px-4 py-3 rounded-xl rounded-tl-none flex gap-1 items-center border border-white/5">
-                  <span className="w-1.5 h-1.5 bg-primary-teal rounded-full animate-bounce"></span>
-                  <span className="w-1.5 h-1.5 bg-primary-teal rounded-full animate-bounce delay-75"></span>
-                  <span className="w-1.5 h-1.5 bg-primary-teal rounded-full animate-bounce delay-150"></span>
+                <div className="bg-white/10 px-4 py-2 rounded-xl rounded-tl-none flex gap-1">
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></span>
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-75"></span>
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-150"></span>
                 </div>
               </div>
             )}
@@ -210,13 +214,13 @@ export const AIChatWidget: React.FC = () => {
                 type="text" 
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Ask about security, pricing..." 
-                className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary-teal/50 transition-all placeholder-gray-500"
+                placeholder="Ask about pricing, security..." 
+                className="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-primary-teal/50"
               />
               <button 
                 type="submit"
-                disabled={!inputValue.trim() || isTyping}
-                className="w-10 h-10 rounded-lg bg-primary-teal text-black flex items-center justify-center hover:bg-teal-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_10px_rgba(0,240,255,0.2)]"
+                disabled={!inputValue.trim()}
+                className="w-10 h-10 rounded-lg bg-primary-teal text-black flex items-center justify-center hover:bg-teal-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <i className="fa-solid fa-paper-plane"></i>
               </button>
@@ -229,7 +233,7 @@ export const AIChatWidget: React.FC = () => {
       {/* Trigger Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="group relative w-14 h-14 bg-gradient-to-tr from-primary-teal to-blue-500 rounded-full flex items-center justify-center text-black shadow-lg hover:scale-110 transition-transform duration-300 pointer-events-auto z-[100]"
+        className="group relative w-14 h-14 bg-gradient-to-tr from-primary-teal to-blue-500 rounded-full flex items-center justify-center text-black shadow-lg hover:scale-110 transition-transform duration-300 pointer-events-auto"
       >
         <div className="absolute inset-0 bg-primary-teal rounded-full blur opacity-40 group-hover:opacity-75 animate-pulse"></div>
         <i className={`fa-solid ${isOpen ? 'fa-chevron-down' : 'fa-robot'} text-2xl relative z-10 transition-transform ${isOpen ? 'rotate-180' : ''}`}></i>

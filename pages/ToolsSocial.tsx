@@ -14,7 +14,7 @@ const YouTubeGenerator = () => {
         if (!topic) return;
         setLoading(true);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: "AIzaSyDa3xvE22ggiawdxdYCUKj3FaqVpbZ74_8" });
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash-latest',
                 contents: `Act as a YouTube Expert. For the video topic "${topic}", generate 5 click-worthy Titles and 10 SEO Tags.`,
@@ -106,7 +106,7 @@ const InstagramBio = () => {
         if (!niche) return;
         setLoading(true);
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: "AIzaSyDa3xvE22ggiawdxdYCUKj3FaqVpbZ74_8" });
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash-latest',
                 contents: `Generate 5 creative Instagram Bios for a "${niche}" account. Use emojis, line breaks, and call to actions.`,

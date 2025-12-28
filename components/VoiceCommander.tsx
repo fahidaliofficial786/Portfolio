@@ -101,7 +101,7 @@ export const VoiceCommander: React.FC = () => {
 
   const processWithGemini = async (userVoiceText: string) => {
     try {
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey: "AIzaSyDa3xvE22ggiawdxdYCUKj3FaqVpbZ74_8" });
         
         const response = await ai.models.generateContent({
             model: "gemini-3-flash-preview",

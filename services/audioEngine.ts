@@ -50,8 +50,7 @@ export const audioEngine = {
       }
 
       // 4. Call Gemini API
-      // Note: Assuming process.env.API_KEY is available as per instructions.
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey: "AIzaSyDa3xvE22ggiawdxdYCUKj3FaqVpbZ74_8" });
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash-preview-tts",
         contents: [{ parts: [{ text }] }],

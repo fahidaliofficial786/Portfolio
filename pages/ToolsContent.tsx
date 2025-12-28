@@ -18,7 +18,7 @@ export const ToolsContent: React.FC = () => {
         setContent('');
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: "AIzaSyDa3xvE22ggiawdxdYCUKj3FaqVpbZ74_8" });
             const prompt = `Write a comprehensive, SEO-optimized blog post about "${topic}". Tone: ${tone}. 
             Structure:
             - Use <h1> for the Main Title.

@@ -59,7 +59,7 @@ const ViralHeadlineGen = () => {
         setHeadlines([]);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: "AIzaSyDa3xvE22ggiawdxdYCUKj3FaqVpbZ74_8" });
             const prompt = `Generate 5 viral, click-worthy headlines about "${topic}". They should be catchy, emotional, or curiosity-inducing. Return ONLY a JSON array of strings. Example: ["Headline 1", "Headline 2"]`;
             
             const response = await ai.models.generateContent({
@@ -105,7 +105,7 @@ const ViralHeadlineGen = () => {
                 <input 
                     type="text" 
                     placeholder="Enter Keyword (e.g. AI Agents)" 
-                    value={topic}
+                    value={topic} 
                     onChange={(e) => setTopic(e.target.value)}
                     className="flex-1 bg-black/30 border border-white/10 rounded px-3 py-2 text-sm text-white focus:border-yellow-400 outline-none"
                 />
@@ -147,7 +147,7 @@ const HashtagGen = () => {
         setTags([]);
 
         try {
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey: "AIzaSyDa3xvE22ggiawdxdYCUKj3FaqVpbZ74_8" });
             const prompt = `Generate 15 high-reach, relevant hashtags for the topic: "${input}". Mix of broad and niche tags. Return ONLY a JSON array of strings. Example: ["#tag1", "#tag2"]`;
             
             const response = await ai.models.generateContent({
