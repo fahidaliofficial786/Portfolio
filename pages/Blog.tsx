@@ -17,7 +17,7 @@ export const Blog: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
         {BLOG_POSTS.map((post) => (
-          <Link key={post.id} to={`/blog/${post.id}`} className="block h-full">
+          <Link key={post.id} to={`/blog/${post.slug}`} className="block h-full">
             <GlassCard className="h-full flex flex-col hover:-translate-y-2 hover:border-primary-teal/50 transition-all duration-300 group">
               <div className="mb-4">
                  <span className="text-xs font-mono text-primary-teal bg-primary-teal/10 px-2 py-1 rounded border border-primary-teal/20">

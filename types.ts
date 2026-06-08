@@ -1,6 +1,7 @@
 
 export interface BlogPost {
   id: number;
+  slug: string;
   title: string;
   date: string;
   author: string;
@@ -87,7 +88,7 @@ export enum PageRoutes {
   ABOUT = '/about',
   CONTACT = '/contact',
   BLOG = '/blog',
-  BLOG_POST = '/blog/:id',
+  BLOG_POST = '/blog/:slug',
   DMCA = '/dmca',
   PRIVACY = '/privacy',
   TERMS = '/terms',

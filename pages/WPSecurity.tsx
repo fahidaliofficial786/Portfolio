@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { GlassCard } from '../components/GlassCard';
 import { SectionTitle } from '../components/SectionTitle';
 import { SECURITY_PRICING, BLOG_POSTS, WP_SERVICES, WP_PROCESS_STEPS, WP_TECHNICAL_FEATURES, WP_WHY_CHOOSE_ME, SOCIAL_LINKS, WP_FAQS, CONTACT_CONFIG } from '../constants';
@@ -250,13 +251,17 @@ export const WPSecurity: React.FC = () => {
       <section className="container mx-auto max-w-6xl px-4 mb-24">
         <SectionTitle title="Security Insights" subtitle="Latest advice from the trenches." />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {BLOG_POSTS.map((post) => (
-            <GlassCard key={post.id} className="flex flex-col h-full hover:-translate-y-2 transition-transform">
-              <span className="text-xs text-teal-400 mb-2">{post.date}</span>
-              <h3 className="text-xl font-bold text-white mb-3 line-clamp-2">{post.title}</h3>
-              <p className="text-gray-400 text-sm mb-4 line-clamp-3 flex-1">{post.summary}</p>
-              <button className="text-teal-400 text-sm font-bold hover:underline self-start">Read Article</button>
-            </GlassCard>
+          {BLOG_POSTS.slice(0, 3).map((post) => (
+            <Link key={post.id} to={`/blog/${post.slug}`} className="block h-full">
+              <GlassCard className="flex flex-col h-full hover:-translate-y-2 hover:border-primary-teal/50 transition-all duration-300">
+                <span className="text-xs text-teal-400 mb-2">{post.date}</span>
+                <h3 className="text-xl font-bold text-white mb-3 line-clamp-2">{post.title}</h3>
+                <p className="text-gray-400 text-sm mb-4 line-clamp-3 flex-1">{post.summary}</p>
+                <span className="text-teal-400 text-sm font-bold hover:underline self-start flex items-center gap-2">
+                  Read Article <i className="fa-solid fa-arrow-right text-xs text-teal-400"></i>
+                </span>
+              </GlassCard>
+            </Link>
           ))}
         </div>
       </section>

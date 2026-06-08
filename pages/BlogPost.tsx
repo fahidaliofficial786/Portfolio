@@ -5,8 +5,8 @@ import { SEO } from '../components/SEO';
 import { BLOG_POSTS, SOCIAL_LINKS } from '../constants';
 
 export const BlogPost: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const post = BLOG_POSTS.find(p => p.id === Number(id));
+  const { slug } = useParams<{ slug: string }>();
+  const post = BLOG_POSTS.find(p => p.slug === slug || String(p.id) === slug);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [speechSynth, setSpeechSynth] = useState<SpeechSynthesis | null>(null);
   const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);

@@ -173,6 +173,7 @@ export const SOCIAL_LINKS = {
 export const BLOG_POSTS: BlogPost[] = [
   {
     id: 1,
+    slug: "wordpress-site-hacked-7-signs",
     title: "WordPress Site Hacked? 7 Telltale Signs and Your Emergency Action Plan",
     date: "October 01, 2025",
     author: "Fahid Ali",
@@ -215,6 +216,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     id: 2,
+    slug: "why-wordpress-prime-target-fortify",
     title: "Why WordPress is a Prime Target (And How to Fortify Your Site)",
     date: "October 03, 2025",
     author: "Fahid Ali",
@@ -242,6 +244,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     id: 3,
+    slug: "ultimate-guide-wordpress-backups",
     title: "Your Website's Lifeline: The Ultimate Guide to WordPress Backups",
     date: "October 05, 2025",
     author: "Fahid Ali",
@@ -266,6 +269,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     id: 4,
+    slug: "top-5-wordpress-security-plugins",
     title: "Top 5 Security Plugins to Harden Your WordPress Site in 2025",
     date: "October 07, 2025",
     author: "Fahid Ali",
@@ -291,6 +295,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     id: 5,
+    slug: "anatomy-wordpress-hack-attack-vectors",
     title: "Anatomy of a WordPress Hack: Common Attack Vectors Explained",
     date: "October 09, 2025",
     author: "Fahid Ali",
