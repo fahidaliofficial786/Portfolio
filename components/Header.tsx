@@ -140,6 +140,18 @@ export const Header: React.FC = () => {
                   Security
                 </Link>
 
+                <Link to={PageRoutes.CASE_STUDIES} className={`relative px-4 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 whitespace-nowrap ${location.pathname === PageRoutes.CASE_STUDIES ? 'text-black bg-primary-teal' : 'text-gray-300 hover:text-white hover:bg-white/10'}`}>
+                  Case Studies
+                </Link>
+
+                <Link to={PageRoutes.ROI_CALCULATOR} className={`relative px-4 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 whitespace-nowrap ${location.pathname === PageRoutes.ROI_CALCULATOR ? 'text-black bg-primary-teal' : 'text-gray-300 hover:text-white hover:bg-white/10'}`}>
+                  ROI Calculator
+                </Link>
+
+                <Link to={PageRoutes.AGENCY_PARTNERSHIP} className={`relative px-4 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 whitespace-nowrap ${location.pathname === PageRoutes.AGENCY_PARTNERSHIP ? 'text-black bg-primary-teal' : 'text-gray-300 hover:text-white hover:bg-white/10'}`}>
+                  Partnerships
+                </Link>
+
                 <button onClick={handleContactClick} className={`px-4 py-2.5 rounded-full text-sm font-bold tracking-wide transition-all duration-300 whitespace-nowrap ${location.pathname === PageRoutes.CONTACT ? 'text-black bg-primary-teal' : 'text-gray-300 hover:text-white hover:bg-white/10'}`}>
                   Contact
                 </button>
@@ -210,6 +222,12 @@ export const Header: React.FC = () => {
 
 
               <Link to={PageRoutes.SECURITY} onClick={closeMenu} className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-white hover:to-white hover:translate-x-4 transition-all block py-2">SECURITY</Link>
+
+              <Link to={PageRoutes.CASE_STUDIES} onClick={closeMenu} className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-white hover:to-white hover:translate-x-4 transition-all block py-2">CASE STUDIES</Link>
+
+              <Link to={PageRoutes.ROI_CALCULATOR} onClick={closeMenu} className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-white hover:to-white hover:translate-x-4 transition-all block py-2">ROI CALCULATOR</Link>
+
+              <Link to={PageRoutes.AGENCY_PARTNERSHIP} onClick={closeMenu} className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-white hover:to-white hover:translate-x-4 transition-all block py-2">AGENCY PARTNERSHIPS</Link>
 
               <div className="mt-8 pt-8 border-t border-white/10 w-full">
                    <button onClick={handleContactClick} className="text-left text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-500 to-gray-700 hover:from-primary-teal hover:to-green-400 hover:translate-x-4 transition-all w-full py-2">ESTABLISH UPLINK</button>

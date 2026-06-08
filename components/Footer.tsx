@@ -141,6 +141,9 @@ export const Footer: React.FC = () => {
             <h3 className="text-white font-bold mb-4">Company</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
               <li><Link to={PageRoutes.ABOUT} className="hover:text-teal-400 transition-colors">About Fahid</Link></li>
+              <li><Link to={PageRoutes.CASE_STUDIES} className="hover:text-teal-400 transition-colors">Case Studies</Link></li>
+              <li><Link to={PageRoutes.ROI_CALCULATOR} className="hover:text-teal-400 transition-colors">ROI Calculator</Link></li>
+              <li><Link to={PageRoutes.AGENCY_PARTNERSHIP} className="hover:text-teal-400 transition-colors">Agency Partnerships</Link></li>
               <li><Link to={PageRoutes.BLOG} className="hover:text-teal-400 transition-colors">Tech Blog</Link></li>
               <li><Link to={PageRoutes.CONTACT} className="hover:text-teal-400 transition-colors">Contact Us</Link></li>
               <li><Link to={PageRoutes.PRIVACY} className="hover:text-teal-400 transition-colors">Privacy Policy</Link></li>

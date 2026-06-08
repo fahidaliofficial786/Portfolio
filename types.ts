@@ -80,6 +80,10 @@ export enum PageRoutes {
   SERVICE_SEO = '/services/local-seo',
   SERVICE_CRM = '/services/crm-automation',
 
+  CASE_STUDIES = '/case-studies',
+  AGENCY_PARTNERSHIP = '/white-label',
+  ROI_CALCULATOR = '/roi-calculator',
+
   ABOUT = '/about',
   CONTACT = '/contact',
   BLOG = '/blog',

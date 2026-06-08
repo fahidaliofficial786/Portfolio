@@ -11,6 +11,9 @@ import { Contact } from './pages/Contact';
 import { Blog } from './pages/Blog';
 import { BlogPost } from './pages/BlogPost';
 import { Legal } from './pages/Legal';
+import { CaseStudies } from './pages/CaseStudies';
+import { AgencyPartnership } from './pages/AgencyPartnership';
+import { ROICalculator } from './pages/ROICalculator';
 import { PageRoutes } from './types';
 import { SystemHUD } from './components/SystemHUD';
 import { AIChatWidget } from './components/AIChatWidget';
@@ -84,6 +87,9 @@ const App: React.FC = () => {
             <Route path={PageRoutes.SERVICE_CONTENT} element={<ServicePageTemplate data={SERVICES_DATA['content']} />} />
             <Route path={PageRoutes.SERVICE_SEO} element={<ServicePageTemplate data={SERVICES_DATA['local-seo']} />} />
             <Route path={PageRoutes.SERVICE_CRM} element={<ServicePageTemplate data={SERVICES_DATA['crm-automation']} />} />
+            <Route path={PageRoutes.CASE_STUDIES} element={<CaseStudies />} />
+            <Route path={PageRoutes.AGENCY_PARTNERSHIP} element={<AgencyPartnership />} />
+            <Route path={PageRoutes.ROI_CALCULATOR} element={<ROICalculator />} />
             <Route path={PageRoutes.ABOUT} element={<About />} />
             <Route path={PageRoutes.CONTACT} element={<Contact />} />
             <Route path={PageRoutes.BLOG} element={<Blog />} />
