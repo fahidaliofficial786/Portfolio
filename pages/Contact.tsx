@@ -72,31 +72,58 @@ export const Contact: React.FC = () => {
            )}
         </GlassCard>
 
-        {/* Info & Calendar */}
-        <div className="space-y-8">
-           {/* Quick Links */}
-           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <a href={SOCIAL_LINKS.email} className="p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-primary-teal transition-all group">
-                 <i className="fa-solid fa-envelope text-3xl text-gray-400 group-hover:text-primary-teal mb-4 block"></i>
-                 <span className="font-bold text-white">Email Me</span>
-              </a>
-              <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noreferrer" className="p-6 bg-green-500/10 border border-green-500/20 rounded-xl hover:bg-green-500/20 transition-all group">
-                 <i className="fa-brands fa-whatsapp text-3xl text-green-500 mb-4 block"></i>
-                 <span className="font-bold text-white">WhatsApp</span>
-              </a>
-           </div>
+         {/* Info & Calendar */}
+         <div className="space-y-8">
+            {/* Quick Links */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+               <a href={SOCIAL_LINKS.email} className="p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-primary-teal transition-all group">
+                  <i className="fa-solid fa-envelope text-3xl text-gray-400 group-hover:text-primary-teal mb-4 block"></i>
+                  <span className="font-bold text-white block">Email Me</span>
+                  <span className="text-xs text-gray-400 font-mono mt-1 block break-all">Fahaidaliofficial@gmail.com</span>
+               </a>
+               <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noreferrer" className="p-6 bg-green-500/10 border border-green-500/20 rounded-xl hover:bg-green-500/20 transition-all group">
+                  <i className="fa-brands fa-whatsapp text-3xl text-green-500 mb-4 block"></i>
+                  <span className="font-bold text-white block">WhatsApp</span>
+                  <span className="text-xs text-gray-400 font-mono mt-1 block">+92 348 4103239</span>
+               </a>
+            </div>
 
-           {/* Calendar */}
-           <GlassCard className="p-2 h-[500px] overflow-hidden">
-               <iframe 
-                  src={`${CONTACT_CONFIG.calendlyUrl}?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=0F1115&text_color=ffffff&primary_color=00F0FF`}
-                  width="100%" 
-                  height="100%" 
-                  frameBorder="0"
-                  title="Calendly"
-               ></iframe>
-           </GlassCard>
-        </div>
+            {/* Agency Details Card */}
+            <GlassCard className="p-6 space-y-4">
+              <h4 className="text-lg font-bold text-white border-b border-white/10 pb-3 flex items-center gap-2">
+                <i className="fa-solid fa-server text-primary-teal"></i> Agency Node Details
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-1">Registered Entity</span>
+                  <span className="text-gray-300 font-semibold">FHDTECH LTD (UK #14611440)</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-1">Response Guarantee</span>
+                  <span className="text-teal-400 font-mono font-semibold">⚡ &lt; 24h SLA response</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-1">Base Coordinates</span>
+                  <span className="text-gray-300">Lahore, Punjab, Pakistan</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-1">Operational Hours</span>
+                  <span className="text-gray-300">Mon - Sat (9am - 6pm PST)</span>
+                </div>
+              </div>
+            </GlassCard>
+
+            {/* Calendar */}
+            <GlassCard className="p-2 h-[400px] overflow-hidden">
+                <iframe 
+                   src={`${CONTACT_CONFIG.calendlyUrl}?hide_landing_page_details=1&hide_gdpr_banner=1&background_color=0F1115&text_color=ffffff&primary_color=00F0FF`}
+                   width="100%" 
+                   height="100%" 
+                   frameBorder="0"
+                   title="Calendly"
+                ></iframe>
+            </GlassCard>
+         </div>
 
       </div>
     </div>

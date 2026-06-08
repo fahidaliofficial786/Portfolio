@@ -50,6 +50,9 @@ export const About: React.FC = () => {
               <p>
                  As a **Fiverr Level 2 Seller** with more than 130+ positive client evaluations, my job is to build secure, self-driving business systems. By night, I remediate hacked sites and harden server parameters; by day, I configure CRM pipelines that capture, nurture, and close leads on autopilot.
               </p>
+              <p>
+                 In addition to high-level automation architecture, I provide dedicated, technical **GoHighLevel Virtual Assistant (VA)** and CRM administration services. This includes day-to-day pipeline management, real-time workflow troubleshooting, custom GHL funnel layouts, form integrations, and list segmentation. Having a highly competent VA managing your GoHighLevel instance ensures your marketing campaigns run smoothly and leads never slip through the cracks.
+              </p>
               <p className="text-sm font-mono text-gray-400 border-l-2 border-primary-teal/40 pl-4 py-1">
                  "If a business protocol is repeated more than twice manually, it is a liability. Automate the friction, secure the asset."
               </p>
