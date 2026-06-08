@@ -153,11 +153,46 @@ export const Footer: React.FC = () => {
 
           <div>
             <h3 className="text-white font-bold mb-4">Connect</h3>
-            <div className="flex flex-wrap gap-4 text-xl">
-              <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-teal-400 transition-colors"><i className="fab fa-linkedin"></i></a>
-              <a href={SOCIAL_LINKS.github} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-teal-400 transition-colors"><i className="fab fa-github"></i></a>
-              <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-green-500 transition-colors"><i className="fab fa-whatsapp"></i></a>
-              <a href={SOCIAL_LINKS.email} className="text-gray-400 hover:text-teal-400 transition-colors"><i className="fas fa-envelope"></i></a>
+            <div className="flex flex-wrap gap-4 text-xl mb-6">
+              <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-teal-400 transition-colors" title="LinkedIn"><i className="fab fa-linkedin"></i></a>
+              <a href={SOCIAL_LINKS.github} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-teal-400 transition-colors" title="GitHub"><i className="fab fa-github"></i></a>
+              <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-green-500 transition-colors" title="WhatsApp"><i className="fab fa-whatsapp"></i></a>
+              <a href={SOCIAL_LINKS.email} className="text-gray-400 hover:text-teal-400 transition-colors" title="Email"><i className="fas fa-envelope"></i></a>
+              <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-red-500 transition-colors" title="YouTube"><i className="fab fa-youtube"></i></a>
+              <a href={SOCIAL_LINKS.fiverr} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-green-400 transition-colors" title="Fiverr"><i className="fa-solid fa-briefcase"></i></a>
+            </div>
+
+            <div className="border-t border-white/10 pt-4 space-y-4">
+              <div>
+                <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-2">Direct Channels</span>
+                <a href={SOCIAL_LINKS.email} className="text-sm text-gray-300 hover:text-teal-400 transition-colors flex items-center gap-2 mb-2 break-all">
+                  <i className="fa-solid fa-envelope text-xs text-teal-400/70"></i>
+                  Fahaidaliofficial@gmail.com
+                </a>
+                <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noreferrer" className="text-sm text-gray-300 hover:text-green-400 transition-colors flex items-center gap-2">
+                  <i className="fa-brands fa-whatsapp text-xs text-green-500/70"></i>
+                  +92 348 4103239
+                </a>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest block mb-2">Availability & SLA</span>
+                <div className="flex items-center gap-2 text-xs text-gray-400 mb-1.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  </span>
+                  <span className="font-mono text-green-400 font-bold uppercase tracking-wider">Online & Active</span>
+                </div>
+                <div className="text-xs text-gray-400 flex items-center gap-2 mb-1">
+                  <i className="fa-solid fa-bolt text-xs text-yellow-400/80"></i>
+                  <span>Response: <span className="text-white font-mono font-semibold">{"< 24h SLA"}</span></span>
+                </div>
+                <div className="text-xs text-gray-400 flex items-center gap-2">
+                  <i className="fa-solid fa-calendar-days text-xs text-gray-500"></i>
+                  <span>Ops: <span className="text-white font-mono font-semibold">Mon - Sat (9am - 6pm)</span></span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
