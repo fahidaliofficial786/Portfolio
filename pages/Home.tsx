@@ -10,6 +10,7 @@ import { TestimonialCarousel } from '../components/TestimonialCarousel';
 import { FeaturedProjects } from '../components/FeaturedProjects';
 import { ExperienceSection } from '../components/ExperienceSection';
 import { Accordion } from '../components/Accordion';
+import { SEO } from '../components/SEO';
 
 export const Home: React.FC = () => {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -54,6 +55,11 @@ export const Home: React.FC = () => {
 
   return (
     <div className="pt-24 md:pt-28 overflow-x-hidden">
+      <SEO 
+        title="GoHighLevel Automation & WordPress Security Specialist" 
+        description="Fahid Ali is a GoHighLevel (GHL) automation specialist and certified WordPress security expert. Get custom CRM workflows, Zapier integrations, and emergency website malware cleanup." 
+        keywords="GoHighLevel, GHL Automation, WordPress Security, Malware Removal, Hacked WordPress, CRM Automation, Zapier, Make.com, Fahid Ali, FHD Tech"
+      />
       
       {/* Hero Section */}
       <section 

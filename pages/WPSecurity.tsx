@@ -4,6 +4,7 @@ import { GlassCard } from '../components/GlassCard';
 import { SectionTitle } from '../components/SectionTitle';
 import { SECURITY_PRICING, BLOG_POSTS, WP_SERVICES, WP_PROCESS_STEPS, WP_TECHNICAL_FEATURES, WP_WHY_CHOOSE_ME, SOCIAL_LINKS, WP_FAQS, CONTACT_CONFIG } from '../constants';
 import { Accordion } from '../components/Accordion';
+import { SEO } from '../components/SEO';
 
 export const WPSecurity: React.FC = () => {
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -33,6 +34,11 @@ export const WPSecurity: React.FC = () => {
 
   return (
     <div className="pt-24 pb-12 overflow-x-hidden">
+      <SEO 
+        title="Emergency WordPress Malware Removal & Security Hardening" 
+        description="Is your WordPress site hacked, blacklisted, or redirecting to spam? Fahid Ali provides 24-48 hour emergency malware cleanup, 6G firewall setups, and permanent site security hardening." 
+        keywords="WordPress Malware Removal, Clean Hacked WordPress, WordPress Security Hardening, 6G Firewall, Google Blacklist Removal, Hacked Site Cleanup"
+      />
       
       {/* Warning Hero */}
       <section className="container mx-auto max-w-5xl px-4 text-center mb-20">

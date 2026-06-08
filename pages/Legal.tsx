@@ -1,5 +1,6 @@
 import React from 'react';
 import { GlassCard } from '../components/GlassCard';
+import { SEO } from '../components/SEO';
 
 interface LegalPageProps {
   title: string;
@@ -9,6 +10,11 @@ interface LegalPageProps {
 export const Legal: React.FC<LegalPageProps> = ({ title, content }) => {
   return (
     <div className="pt-24 pb-12 container mx-auto max-w-4xl px-4">
+      <SEO 
+        title={title} 
+        description={`FHD Tech Portfolio Legal Policies and Information - ${title}`} 
+        keywords={`${title}, Legal, Policies, Fahid Ali, FHD Tech`}
+      />
       <GlassCard className="p-8 md:p-12">
         <h1 className="text-3xl md:text-4xl font-bold text-white mb-8 border-b border-gray-700 pb-4">{title}</h1>
         <div className="prose prose-invert max-w-none text-gray-300">
