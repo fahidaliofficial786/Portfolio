@@ -75,7 +75,7 @@ export const Header: React.FC = () => {
           <Link to={PageRoutes.HOME} className="flex items-center gap-3 group relative z-[70] flex-shrink-0" onClick={handleLogoClick}>
             <div className="relative w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-[#0F1115] rounded-xl border border-white/10 group-hover:border-primary-teal/60 group-hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] transition-all duration-300 overflow-hidden">
                <div className="absolute top-0 left-0 w-full h-1 bg-primary-teal/50 animate-[scan_2s_linear_infinite] opacity-0 group-hover:opacity-100"></div>
-               <i className="fa-solid fa-layer-group text-xl md:text-2xl text-primary-teal"></i>
+               <img src="/logo.png" alt="FHD Tech Logo" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col">
               <span className="text-xl md:text-2xl font-black tracking-tight leading-none text-white">

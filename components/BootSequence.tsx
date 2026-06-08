@@ -54,7 +54,9 @@ export const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
         
         {/* Logo Glitch */}
         <div className="text-center mb-8">
-           <i className="fa-solid fa-layer-group text-6xl animate-pulse mb-4"></i>
+           <div className="w-20 h-20 mx-auto bg-[#0F1115] rounded-2xl border border-white/10 overflow-hidden mb-4 shadow-[0_0_30px_rgba(0,240,255,0.2)] animate-pulse">
+              <img src="/logo.png" alt="FHD Tech Logo" className="w-full h-full object-cover" />
+           </div>
            <h1 className="text-2xl font-black tracking-[0.5em] text-white">FHD<span className="text-primary-teal">TECH</span></h1>
         </div>
 

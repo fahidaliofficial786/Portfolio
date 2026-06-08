@@ -74,7 +74,10 @@ export const Footer: React.FC = () => {
       <div className="container mx-auto max-w-6xl px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
+            <Link to="/" className="flex items-center gap-3 mb-4 group">
+              <div className="relative w-8 h-8 flex items-center justify-center bg-[#0F1115] rounded-lg border border-white/10 overflow-hidden">
+                <img src="/logo.png" alt="FHD Tech Logo" className="w-full h-full object-cover" />
+              </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-teal-400 to-purple-400 bg-clip-text text-transparent">FHDtech</span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
