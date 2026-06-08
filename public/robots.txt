@@ -1,0 +1,28 @@
+# Robots.txt - SEO & AI Model Crawler Directives
+# Authorizes search engine indexing and semantic AI model searches
+
+User-agent: *
+Allow: /
+
+# Allow AI Search & Chat Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Sitemap Location
+Sitemap: https://app.fhdtech.com/sitemap.xml
+Sitemap: https://fhdtech.com/sitemap.xml

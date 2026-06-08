@@ -85,7 +85,7 @@ export enum PageRoutes {
   AGENCY_PARTNERSHIP = '/white-label',
   ROI_CALCULATOR = '/roi-calculator',
 
-  ABOUT = '/about',
+  ABOUT = '/Fahid-about',
   CONTACT = '/contact',
   BLOG = '/blog',
   BLOG_POST = '/blog/:slug',
